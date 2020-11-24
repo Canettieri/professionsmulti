@@ -122,6 +122,8 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
 	elseif (MINM - startskill) > 0 then
 		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(MINM - startskill).."|r"
+	elseif (MINM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+		ColorValueAccount = ""
 	end
 
 	local warning -- Aviso de que não está mais aprendendo
