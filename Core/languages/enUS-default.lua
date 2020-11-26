@@ -66,7 +66,6 @@ L["soulDust"] = "|cFFFFFFFFSoul Dust|r"
 L["sacredShard"] = "|cff0070ddSacred Shard|r"
 L["eternalCrystal"] = "|cffa335eeEternal Crystal|r"
 
-
 --- Fishing (Legion)
 L["mackerel"] = "|cFFFFFFFFSilver Mackerel|r"
 L["queenfish"] = "|cFFFFFFFFCursed Queenfish|r"
