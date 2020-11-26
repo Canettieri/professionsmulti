@@ -1,6 +1,6 @@
 --[[
 Description: This plugin is part of the "Titan Panel [Professions] Multi" addon. It shows your Leatherworking skill level.
-Site: http://www.curse.com/addons/wow/titan-panel-professions-multi
+Site: https://www.curseforge.com/wow/addons/titan-panel-professions-multi
 Author: Canettieri
 Special Thanks to Eliote.
 --]]
