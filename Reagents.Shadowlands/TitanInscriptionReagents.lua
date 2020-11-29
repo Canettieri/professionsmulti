@@ -12,19 +12,19 @@ local ID = "TITAN_RESISCPM_SL"
 
 local reagentOneName = L["luminousInk"]
 local reagentOneIcon = "|TInterface\\Icons\\inv_inscription_ink_luminous01:0|t"
-local reagentOneID = 311406
+local reagentOneID = 173059
 local reagentOne = 0
 local startReagentOne = 0
 
 local reagentTwoName = L["umbralInk"]
 local reagentTwoIcon = "|TInterface\\Icons\\inv_inscription_ink_umbral01:0|t"
-local reagentTwoID = 311405
+local reagentTwoID = 173058
 local reagentTwo = 0
 local startReagentTwo = 0
 
 local reagentThreeName = L["tranquilInk"]
 local reagentThreeIcon = "|TInterface\\Icons\\inv_inscription_ink_tranquil01:0|t"
-local reagentThreeID = 321029
+local reagentThreeID = 175970
 local reagentThree = 0
 local startReagentThree = 0
 
@@ -71,7 +71,7 @@ local function getReagentFour()
 	return GetItemCount(reagentFourID, true) or 0
 end
 local function getReagentFive()
-	return GetItemCount(reagentFourID, true) or 0
+	return GetItemCount(reagentFiveID, true) or 0
 end
 local function getReagentSix()
 	return GetItemCount(reagentSixID, true) or 0
@@ -278,8 +278,8 @@ local function GetTooltipText(self, id)
 	local reagentFourBag = "\n \n"..reagentFourIcon.." "..reagentFourName.."\n"..L["totalbag"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentFourID))
 	local reagentFourBank = "\n"..L["totalbank"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentFourID, true) - GetItemCount(reagentFourID))
 
-	local reagentFiveBag = "\n \n"..reagentFiveIcon.." "..reagentFiveName.."\n"..L["totalbag"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentFourID))
-	local reagentFiveBank = "\n"..L["totalbank"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentFourID, true) - GetItemCount(reagentFourID))
+	local reagentFiveBag = "\n \n"..reagentFiveIcon.." "..reagentFiveName.."\n"..L["totalbag"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentFiveID))
+	local reagentFiveBank = "\n"..L["totalbank"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentFiveID, true) - GetItemCount(reagentFiveID))
 
 	local reagentSixBag = "\n \n"..reagentSixIcon.." "..reagentSixName.."\n"..L["totalbag"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentSixID))
 	local reagentSixBank = "\n"..L["totalbank"].."\t"..TitanUtils_GetHighlightText(GetItemCount(reagentSixID, true) - GetItemCount(reagentSixID))
