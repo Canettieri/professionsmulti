@@ -18,7 +18,8 @@ Core\languages\itIT.lua
 Core\languages\koKR.lua
 Core\languages\ptBR.lua
 Core\languages\ruRU.lua
-Core\Elib-2.4.lua
+Core\ElioteDropDownMenu-1.0.lua
+Core\Elib-4.0.lua
 Core\ProfessionsCore.lua
 TitanArchaeologyFragmentsMulti.lua
 TitanMasterMulti.lua

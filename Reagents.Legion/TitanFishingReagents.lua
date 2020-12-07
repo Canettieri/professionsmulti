@@ -293,77 +293,95 @@ local eventsTable = {
 	end
 }
 -----------------------------------------------
-local function PrepareMenu(self, id)
-	TitanPanelRightClickMenu_AddTitle(TitanPlugins[id].menuText)
-	TitanPanelRightClickMenu_AddToggleIcon(id)
+function PrepareMenu(eddm, self, id)
+	eddm.UIDropDownMenu_AddButton({
+		text = TitanPlugins[id].menuText,
+		hasArrow = false,
+		isTitle = true,
+		isUninteractable = true,
+		notCheckable = true
+	})
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	eddm.UIDropDownMenu_AddButton({
+		text = ACE["TITAN_PANEL_MENU_SHOW_ICON"],
+		func = function() TitanPanelRightClickMenu_ToggleVar({ id, "ShowIcon", nil }) end,
+		checked = TitanGetVar(id, "ShowIcon"),
+		keepShownOnClick = 1
+	})
+
+	local info = {};
 	info.text = L["showbb"];
 	info.func = function() TitanToggleVar(id, "ShowBarBalance"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "ShowBarBalance");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	TitanPanelRightClickMenu_AddSpacer()
+	eddm.UIDropDownMenu_AddSeparator();
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["mackerel"];
 	info.func = function() TitanToggleVar(id, "HideMackerel"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideMackerel");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["queenfish"];
 	info.func = function() TitanToggleVar(id, "HideQueen"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideQueen");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["salmon"];
 	info.func = function() TitanToggleVar(id, "HideSalmon"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideSalmon");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["mossgill"];
 	info.func = function() TitanToggleVar(id, "HideMossgill"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideMossgill");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["stormray"];
 	info.func = function() TitanToggleVar(id, "HideStormray"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideStormray");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["koi"];
 	info.func = function() TitanToggleVar(id, "HideKoi"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideKoi");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["barracuda"];
 	info.func = function() TitanToggleVar(id, "HideBarracuda"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideBarracuda");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	TitanPanelRightClickMenu_AddSpacer()
-	TitanPanelRightClickMenu_AddCommand(ACE["TITAN_PANEL_MENU_HIDE"], id, TITAN_PANEL_MENU_FUNC_HIDE);
-	L_UIDropDownMenu_AddSeparator()
+	eddm.UIDropDownMenu_AddSpace();
+
+	eddm.UIDropDownMenu_AddButton({
+		notCheckable = true,
+		text = ACE["TITAN_PANEL_MENU_HIDE"],
+		func = function() TitanPanelRightClickMenu_Hide(id) end
+	})
+
+	eddm.UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;
 	info.notCheckable = true
 	info.keepShownOnClick = false
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 end
 -----------------------------------------------
 L.Elib({

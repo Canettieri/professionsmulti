@@ -149,8 +149,14 @@ local function GetTooltipText(self, id)
 end
 
 -----------------------------------------------
-local function PrepareMenu(self, id)
-	TitanPanelRightClickMenu_AddTitle(TitanPlugins[id].menuText)
+function PrepareMenu(eddm, self, id)
+	eddm.UIDropDownMenu_AddButton({
+		text = TitanPlugins[id].menuText,
+		hasArrow = false,
+		isTitle = true,
+		isUninteractable = true,
+		notCheckable = true
+	})
 
 	local continue = false
 	for i = 1, 20 do
@@ -161,60 +167,60 @@ local function PrepareMenu(self, id)
 	end
 
 	if continue then
-		local info = L_UIDropDownMenu_CreateInfo();
+		local info = {};
 		info = {};
 		info.text = L["buttonText"];
 		info.notClickable = true
 		info.notCheckable = true
 		info.isTitle = true
-		L_UIDropDownMenu_AddButton(info);
+		eddm.UIDropDownMenu_AddButton(info);
 
-		TitanPanelRightClickMenu_AddToggleIcon(id)
-		TitanPanelRightClickMenu_AddToggleLabelText(id)
-
-		local info = L_UIDropDownMenu_CreateInfo();
-		info = {};
-		info.text = L["tooltip"];
-		info.notClickable = true
-		info.notCheckable = true
-		info.isTitle = true
-		L_UIDropDownMenu_AddButton(info);
-
-		local info = L_UIDropDownMenu_CreateInfo();
+		local info = {};
 		info.text = L["hidehint"];
 		info.func = function() TitanToggleVar(id, "HideHint"); TitanPanelButton_UpdateButton(id); end
 		info.checked = TitanGetVar(id, "HideHint");
 		info.keepShownOnClick = true
-		L_UIDropDownMenu_AddButton(info);
+		eddm.UIDropDownMenu_AddButton(info);
 
-		local info = L_UIDropDownMenu_CreateInfo();
+		local info = {};
 		info.text = L["displaynofrag"];
 		info.func = function() TitanToggleVar(id, "DisplayNoFrag"); TitanPanelButton_UpdateButton(id); end
 		info.checked = TitanGetVar(id, "DisplayNoFrag");
 		info.keepShownOnClick = true
-		L_UIDropDownMenu_AddButton(info);
+		eddm.UIDropDownMenu_AddButton(info);
 
-		TitanPanelRightClickMenu_AddTitle(L["archfragments"])
+		local info = {};
+		info.text = L["archfragments"];
+		info.notClickable = true
+		info.notCheckable = true
+		info.isTitle = true
+		eddm.UIDropDownMenu_AddButton(info);
 
 		for i = 1, 20 do
-			local info = L_UIDropDownMenu_CreateInfo();
+			local info = {};
 			info.text = name[i];
 			info.func = function() TitanToggleVar(id, varName[i]); TitanPanelButton_UpdateButton(id); end
 			info.checked = TitanGetVar(id, varName[i]);
 			info.keepShownOnClick = true
-			L_UIDropDownMenu_AddButton(info);
+			eddm.UIDropDownMenu_AddButton(info);
 		end
 	end
 
-	TitanPanelRightClickMenu_AddSpacer()
-	TitanPanelRightClickMenu_AddCommand(ACE["TITAN_PANEL_MENU_HIDE"], id, TITAN_PANEL_MENU_FUNC_HIDE);
-	L_UIDropDownMenu_AddSeparator()
+	eddm.UIDropDownMenu_AddSpace();
+
+	eddm.UIDropDownMenu_AddButton({
+		notCheckable = true,
+		text = ACE["TITAN_PANEL_MENU_HIDE"],
+		func = function() TitanPanelRightClickMenu_Hide(id) end
+	})
+
+	eddm.UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;
 	info.notCheckable = true
 	info.keepShownOnClick = false
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 end
 -----------------------------------------------
 L.Elib({

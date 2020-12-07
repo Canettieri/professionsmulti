@@ -338,84 +338,102 @@ local eventsTable = {
 	end
 }
 -----------------------------------------------
-local function PrepareMenu(self, id)
-	TitanPanelRightClickMenu_AddTitle(TitanPlugins[id].menuText)
-	TitanPanelRightClickMenu_AddToggleIcon(id)
+function PrepareMenu(eddm, self, id)
+	eddm.UIDropDownMenu_AddButton({
+		text = TitanPlugins[id].menuText,
+		hasArrow = false,
+		isTitle = true,
+		isUninteractable = true,
+		notCheckable = true
+	})
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	eddm.UIDropDownMenu_AddButton({
+		text = ACE["TITAN_PANEL_MENU_SHOW_ICON"],
+		func = function() TitanPanelRightClickMenu_ToggleVar({ id, "ShowIcon", nil }) end,
+		checked = TitanGetVar(id, "ShowIcon"),
+		keepShownOnClick = 1
+	})
+
+	local info = {};
 	info.text = L["showbb"];
 	info.func = function() TitanToggleVar(id, "ShowBarBalance"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "ShowBarBalance");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	TitanPanelRightClickMenu_AddSpacer()
+	eddm.UIDropDownMenu_AddSeparator();
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["zinanthid"];
 	info.func = function() TitanToggleVar(id, "HideHerbOneBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbOneBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["riverbud"];
 	info.func = function() TitanToggleVar(id, "HideHerbTwoBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbTwoBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["seastalk"];
 	info.func = function() TitanToggleVar(id, "HideHerbThreeBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbThreeBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["starmoss"];
 	info.func = function() TitanToggleVar(id, "HideHerbFourBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbFourBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["akunda"];
 	info.func = function() TitanToggleVar(id, "HideHerbFiveBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbFiveBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["wkiss"];
 	info.func = function() TitanToggleVar(id, "HideHerbSixBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbSixBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["spollen"];
 	info.func = function() TitanToggleVar(id, "HideHerbSevenBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbSevenBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hide"].." "..L["aweed"];
 	info.func = function() TitanToggleVar(id, "HideHerbEightBfA"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHerbEightBfA");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	TitanPanelRightClickMenu_AddSpacer()
-	TitanPanelRightClickMenu_AddCommand(ACE["TITAN_PANEL_MENU_HIDE"], id, TITAN_PANEL_MENU_FUNC_HIDE);
-	L_UIDropDownMenu_AddSeparator()
+	eddm.UIDropDownMenu_AddSpace();
+
+	eddm.UIDropDownMenu_AddButton({
+		notCheckable = true,
+		text = ACE["TITAN_PANEL_MENU_HIDE"],
+		func = function() TitanPanelRightClickMenu_Hide(id) end
+	})
+
+	eddm.UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;
 	info.notCheckable = true
 	info.keepShownOnClick = false
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 end
 -----------------------------------------------
 L.Elib({

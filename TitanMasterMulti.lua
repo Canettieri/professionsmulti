@@ -122,56 +122,72 @@ end
 	return texttooltip
 end
 -----------------------------------------------
-local function PrepareMenu(self, id)
-	TitanPanelRightClickMenu_AddTitle(TitanPlugins[id].menuText)
-	TitanPanelRightClickMenu_AddTitle(L["buttonText"])
+function PrepareMenu(eddm, self, id)
+	eddm.UIDropDownMenu_AddButton({
+		text = TitanPlugins[id].menuText,
+		hasArrow = false,
+		isTitle = true,
+		isUninteractable = true,
+		notCheckable = true
+	})
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["primprof"];
 	info.func = function() TitanToggleVar(id, "PrimProf"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "PrimProf");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hidemax"];
 	info.func = function() TitanToggleVar(id, "HideMax"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideMax");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = ACE["TITAN_CLOCK_MENU_DISPLAY_ON_RIGHT_SIDE"];
 	info.func = function() TitanToggleVar(id, "DisplayOnRightSide"); TitanPanel_InitPanelButtons(id); end
 	info.checked = TitanGetVar(id, "DisplayOnRightSide");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	TitanPanelRightClickMenu_AddTitle(L["tooltip"])
+	local info = {};
+	info.text = L["tooltip"];
+	info.notClickable = true
+	info.notCheckable = true
+	info.isTitle = true
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hideTutorial"];
 	info.func = function() TitanToggleVar(id, "HideTutorial"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideTutorial");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = {};
 	info.text = L["hidehint"];
 	info.func = function() TitanToggleVar(id, "HideHint"); TitanPanelButton_UpdateButton(id); end
 	info.checked = TitanGetVar(id, "HideHint");
 	info.keepShownOnClick = true
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 
-	TitanPanelRightClickMenu_AddSpacer()
-	TitanPanelRightClickMenu_AddCommand(ACE["TITAN_PANEL_MENU_HIDE"], id, TITAN_PANEL_MENU_FUNC_HIDE);
-	L_UIDropDownMenu_AddSeparator()
+	eddm.UIDropDownMenu_AddSpace();
+
+	eddm.UIDropDownMenu_AddButton({
+		notCheckable = true,
+		text = ACE["TITAN_PANEL_MENU_HIDE"],
+		func = function() TitanPanelRightClickMenu_Hide(id) end
+	})
+
+	eddm.UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;
 	info.notCheckable = true
 	info.keepShownOnClick = false
-	L_UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddButton(info);
 end
 -----------------------------------------------
 local function OnClick(self, button)
