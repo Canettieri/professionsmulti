@@ -29,16 +29,16 @@ local function OnUpdate(self, id)
 	profOffset = nil
 
 	if prof1 ~= nil then
-		local name, _, skillLevel, maxSkillLevel, _, offset, _, IncreaseSkillLevel = GetProfessionInfo(prof1)
-		if name == L["blacksmithing"] then
+		local name, _, skillLevel, maxSkillLevel, _, offset, skillLine, IncreaseSkillLevel = GetProfessionInfo(prof1)
+		if skillLine == 164 then
 			BLAM = skillLevel
 			BLAMmax = maxSkillLevel
 			BLAMIncrease = IncreaseSkillLevel
 			profOffset = offset
 			if not startskill then startskill = skillLevel end
 		elseif prof2 ~= nil then
-			local name, _, skillLevel, maxSkillLevel, _, offset, _, IncreaseSkillLevel = GetProfessionInfo(prof2)
-			if name == L["blacksmithing"] then
+			local name, _, skillLevel, maxSkillLevel, _, offset, skillLine, IncreaseSkillLevel = GetProfessionInfo(prof2)
+			if skillLine == 164 then
 				BLAM = skillLevel
 				BLAMmax = maxSkillLevel
 				BLAMIncrease = IncreaseSkillLevel
