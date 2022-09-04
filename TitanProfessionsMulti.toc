@@ -9,6 +9,8 @@
 ## Author: Canettieri
 ## Version: @project-version@
 ## Dependencies: Titan
+## X-Curse-Project-ID: 94459
+## X-Wago-ID: e56nyWN9
 Core\languages\enUS-default.lua
 Core\languages\deDE.lua
 Core\languages\esES.lua
