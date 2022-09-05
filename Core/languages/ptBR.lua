@@ -1,8 +1,6 @@
 --[[
   Oi para você que é brasileiro e está vindo até aqui ler as traduções! HAHA! Se encontrar algum erro, me avise, tá bem?
   Esse aplicativo foi feito por um cara que não manja nada de programação... Brasileiro é foda, né? Quer se meter em tudo... Um marqueteiro querendo desenvolver addon, vê se pode!
-  Mas enfim, aproveite minhas gambiarras, HAHA, foram feitas com amor para você.
-	Tudo aqui neste arquivo foi traduzido por mim, Paulo Canettieri! (com ajuda do wowhead, ninguém é de ferro!)
 --]]
 
 local _, L = ...;
