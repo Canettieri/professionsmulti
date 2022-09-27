@@ -80,7 +80,7 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(ENCM - startskill).."]"
 	end
 
-	if ENCM == 375 then
+	if ENCM == 450 then
 		ENCMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
 	elseif ENCMmax == 0 then
 		ENCMtext = "|cFFFF2e2e"..L["noprof"]
@@ -103,7 +103,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not ENCM then
 		ColorValueAccount = ""
-	elseif ENCM == 375 then
+	elseif ENCM == 450 then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (ENCM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -112,7 +112,7 @@ local function GetTooltipText(self, id)
 	end
 
 	local warning -- Aviso de que não está mais aprendendo
-	if ENCMmax == 375 then
+	if ENCMmax == 450 then
 		warning = ""
 	elseif ENCM == ENCMmax then
 		warning = L["warning"]
