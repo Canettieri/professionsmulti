@@ -151,7 +151,12 @@ L.Elib({
 	id = ID,
 	name = "Titan|c00a7f200 "..L["herbalism"].."|r".." Multi",
 	tooltip = L["herbalism"],
-	icon = "Interface\\Icons\\Trade_herbalism.blp",
+	icon
+	if expansionLevel > 9 then
+		icon = "Interface\\Icons\\ui_profession_herbalism"
+	else
+		icon = "Interface\\Icons\\spell_nature_naturetouchgrow"
+	end
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

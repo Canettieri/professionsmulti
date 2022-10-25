@@ -151,7 +151,12 @@ L.Elib({
 	id = ID,
 	name = "Titan|c00a7f200 "..L["mining"].."|r".." Multi",
 	tooltip = L["mining"],
-	icon = "Interface\\Icons\\Trade_mining.blp",
+	icon
+	if expansionLevel > 9 then
+		icon = "Interface\\Icons\\ui_profession_mining"
+	else
+		icon = "Interface\\Icons\\trade_mining"
+	end
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

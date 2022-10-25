@@ -151,7 +151,12 @@ L.Elib({
 	id = ID,
 	name = "Titan|c00a7f200 "..L["skinning"].."|r".." Multi",
 	tooltip = L["skinning"],
-	icon = "Interface\\Icons\\Inv_misc_pelt_wolf_01.blp",
+	icon
+	if expansionLevel > 9 then
+		icon = "Interface\\Icons\\ui_profession_skinning"
+	else
+		icon = "Interface\\Icons\\inv_misc_pelt_wolf_01"
+	end
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

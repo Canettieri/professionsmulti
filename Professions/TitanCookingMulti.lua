@@ -138,7 +138,12 @@ L.Elib({
 	id = ID,
 	name = "Titan|c113bafe3 "..L["cooking"].."|r".." Multi",
 	tooltip = L["cooking"],
-	icon = "Interface\\Icons\\Inv_misc_food_15.blp",
+	icon
+	if expansionLevel > 9 then
+		icon = "Interface\\Icons\\ui_profession_cooking"
+	else
+		icon = "Interface\\Icons\\inv_misc_food_15"
+	end
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,
