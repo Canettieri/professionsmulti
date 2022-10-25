@@ -14,6 +14,7 @@ local ALCMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
+local expansionLevel = GetExpansionLevel()
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
@@ -150,12 +151,7 @@ L.Elib({
 	id = ID,
 	name = "Titan|c22fdce08 "..L["alchemy"].."|r".." Multi",
 	tooltip = L["alchemy"],
-	icon
-	if expansionLevel > 9 then
-		icon = "Interface\\Icons\\ui_profession_alchemy"
-	else
-		icon = "Interface\\Icons\\trade_alchemy"
-	end
+	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_alchemy" or "Interface\\Icons\\trade_alchemy",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

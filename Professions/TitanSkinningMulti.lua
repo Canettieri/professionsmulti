@@ -14,6 +14,7 @@ local SKIMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
+local expansionLevel = GetExpansionLevel()
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
@@ -151,12 +152,7 @@ L.Elib({
 	id = ID,
 	name = "Titan|c00a7f200 "..L["skinning"].."|r".." Multi",
 	tooltip = L["skinning"],
-	icon
-	if expansionLevel > 9 then
-		icon = "Interface\\Icons\\ui_profession_skinning"
-	else
-		icon = "Interface\\Icons\\inv_misc_pelt_wolf_01"
-	end
+	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_skinning" or "Interface\\Icons\\inv_misc_pelt_wolf_01",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

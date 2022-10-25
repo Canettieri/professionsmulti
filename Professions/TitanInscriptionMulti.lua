@@ -14,6 +14,7 @@ local INSMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
+local expansionLevel = GetExpansionLevel()
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
@@ -151,12 +152,7 @@ L.Elib({
 	id = ID,
 	name = "Titan|c22fdce08 "..L["inscription"].."|r".." Multi",
 	tooltip = L["inscription"],
-	icon
-	if expansionLevel > 9 then
-		icon = "Interface\\Icons\\ui_profession_inscription"
-	else
-		icon = "Interface\\Icons\\inv_inscription_tradeskill01"
-	end
+	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_inscription" or "Interface\\Icons\\inv_inscription_tradeskill01",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

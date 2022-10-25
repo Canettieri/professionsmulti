@@ -14,6 +14,7 @@ local COOMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
+local expansionLevel = GetExpansionLevel()
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
@@ -138,12 +139,7 @@ L.Elib({
 	id = ID,
 	name = "Titan|c113bafe3 "..L["cooking"].."|r".." Multi",
 	tooltip = L["cooking"],
-	icon
-	if expansionLevel > 9 then
-		icon = "Interface\\Icons\\ui_profession_cooking"
-	else
-		icon = "Interface\\Icons\\inv_misc_food_15"
-	end
+	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_cooking" or "Interface\\Icons\\inv_misc_food_15",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

@@ -14,6 +14,7 @@ local HERMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
+local expansionLevel = GetExpansionLevel()
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
@@ -151,12 +152,7 @@ L.Elib({
 	id = ID,
 	name = "Titan|c00a7f200 "..L["herbalism"].."|r".." Multi",
 	tooltip = L["herbalism"],
-	icon
-	if expansionLevel > 9 then
-		icon = "Interface\\Icons\\ui_profession_herbalism"
-	else
-		icon = "Interface\\Icons\\spell_nature_naturetouchgrow"
-	end
+	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_herbalism" or "Interface\\Icons\\spell_nature_naturetouchgrow",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

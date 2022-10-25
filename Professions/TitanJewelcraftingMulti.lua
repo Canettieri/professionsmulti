@@ -14,6 +14,7 @@ local JEWMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
+local expansionLevel = GetExpansionLevel()
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
@@ -151,12 +152,7 @@ L.Elib({
 	id = ID,
 	name = "Titan|c22fdce08 "..L["jewelcrafting"].."|r".." Multi",
 	tooltip = L["jewelcrafting"],
-	icon
-	if expansionLevel > 9 then
-		icon = "Interface\\Icons\\ui_profession_jewelcrafting"
-	else
-		icon = "Interface\\Icons\\inv_misc_gem_01"
-	end
+	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_jewelcrafting" or "Interface\\Icons\\inv_misc_gem_01",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

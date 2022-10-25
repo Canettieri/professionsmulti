@@ -14,6 +14,7 @@ local ENCMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
+local expansionLevel = GetExpansionLevel()
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
@@ -151,12 +152,7 @@ L.Elib({
 	id = ID,
 	name = "Titan|c22fdce08 "..L["enchanting"].."|r".." Multi",
 	tooltip = L["enchanting"],
-	icon
-	if expansionLevel > 9 then
-		icon = "Interface\\Icons\\ui_profession_enchanting"
-	else
-		icon = "Interface\\Icons\\trade_engraving"
-	end
+	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_enchanting" or "Interface\\Icons\\trade_engraving",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,
