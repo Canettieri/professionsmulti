@@ -13,7 +13,7 @@ local FISMmax = 0
 local FISMIncrease = 0
 local startskill
 local level = UnitLevel("player")
-local expansionLevel = GetExpansionLevel()
+local expansionLevel = LE_EXPANSION_LEVEL_CURRENT
 -----------------------------------------------
 local function OnUpdate(self, id)
 	local prof1, prof2, archaeology, fishing, cooking, firstAid = GetProfessions();

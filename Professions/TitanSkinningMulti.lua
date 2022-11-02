@@ -14,7 +14,7 @@ local SKIMIncrease = 0
 local startskill
 local profOffset
 local level = UnitLevel("player")
-local expansionLevel = GetExpansionLevel()
+local expansionLevel = LE_EXPANSION_LEVEL_CURRENT
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "LeftButton" and profOffset) then
