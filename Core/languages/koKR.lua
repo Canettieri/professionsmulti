@@ -34,7 +34,6 @@ L["fragments"] = "조각"
 L["fragtooltip"] = "|cFFB4EEB4도움말:|r |cFFFFFFFF마우스 오른쪽 클릭하여 바에 표시할\r플러그인을 선택합니다.|r\r"
 L["hidehint"] = "도움말 숨기기"
 L["displaynofrag"] = "조각은 제외하고 종족만 표시"
-L["inprog"] = "\rIn progress:" -- No translation
 L["nofragments"] = "\n조각 없음:\r"
 L["noarchaeology"] = "|cFFFF2e2e아직 고고학 기술을 배우지 않았습니다.|r\r\r기술자에게 고고학을 배우십시오."
 --- Shared

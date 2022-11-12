@@ -114,7 +114,7 @@ end
 
 	local texttooltip
 	if not TitanGetVar(ID, "HideTutorial") then
-		texttooltip = L["masterTutorial"]
+		texttooltip = "|cFFFFFFFF"..L["masterTutorialIntro"].."|r\r"..L["masterTutorialIntroText"].."\r\r|cFFFFFFFF"..L["masterTutorialHowTo"].."|r\r"..L["masterTutorialHowToText"]
 	else
 		texttooltip = texthint..topo..textoFinal
 	end
