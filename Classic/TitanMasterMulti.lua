@@ -6,7 +6,6 @@ Special Thanks to Eliote.
 --]]
 
 local ADDON_NAME, L = ...;
-local LibAddonCompat = LibStub("LibAddonCompat-1.0")
 local ACE = LibStub("AceLocale-3.0"):GetLocale("TitanClassic", true)
 local Elib = LibStub("Elib-3.0")
 L.Elib = Elib.Register
@@ -36,9 +35,9 @@ local profs = {}
 local function OnUpdate(self, id)
 
 	for i = 1, 6 do
-		local prof = select(i, LibAddonCompat:GetProfessions())
+		local prof = select(i, GetProfessions())
 		if prof ~= nil then
-			profs[i] = { LibAddonCompat:GetProfessionInfo(prof) }
+			profs[i] = { GetProfessionInfo(prof) }
 		else
 			profs[i] = nil
 		end
@@ -118,7 +117,7 @@ end
 
 	local texttooltip
 	if not TitanGetVar(ID, "HideTutorial") then
-		texttooltip = L["masterTutorial"]
+		texttooltip = "|cFFFFFFFF"..L["masterTutorialIntro"].."|r\r"..L["masterTutorialIntroText"].."\r\r|cFFFFFFFF"..L["masterTutorialHowTo"].."|r\r"..L["masterTutorialHowToText"]
 	else
 		texttooltip = texthint..topo..textoFinal
 	end

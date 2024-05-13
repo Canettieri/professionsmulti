@@ -6,7 +6,6 @@ Special Thanks to Eliote.
 --]]
 
 local ADDON_NAME, L = ...;
-local LibAddonCompat = LibStub("LibAddonCompat-1.0")
 local version = GetAddOnMetadata(ADDON_NAME, "Version")
 local ID = "FIRM"
 local FIRM, prevFIRM = 0.0, -2
@@ -22,14 +21,14 @@ local function OnClick(self, button)
 end
 -----------------------------------------------
 local function OnUpdate(self, id)
-	local prof1, prof2, _, fishing, cooking, firstAid = LibAddonCompat:GetProfessions();
+	local prof1, prof2, _, fishing, cooking, firstAid = GetProfessions();
 
 	local skillLevel = 0
 	local maxSkillLevel = 0
 	profOffset = nil
 
 	if firstAid ~= nil then
-		local name, _, skillLevel, maxSkillLevel, _, offset, _, IncreaseSkillLevel = LibAddonCompat:GetProfessionInfo(firstAid)
+		local name, _, skillLevel, maxSkillLevel, _, offset, _, IncreaseSkillLevel = GetProfessionInfo(firstAid)
 		FIRM = skillLevel
 		FIRMmax = maxSkillLevel
 		FIRMIncrease = IncreaseSkillLevel
