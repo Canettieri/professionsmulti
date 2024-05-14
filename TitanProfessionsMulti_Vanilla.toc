@@ -28,11 +28,11 @@ Classic\Professions\TitanBlacksmithingMulti.lua
 Classic\Professions\TitanCookingMulti.lua
 Classic\Professions\TitanEnchantingMulti.lua
 Classic\Professions\TitanEngineeringMulti.lua
-Classic\Professions\TitanFirstAidMulti.lua
+Classic\Professions\TitanFirstAidMulti-ClassicEra.lua
 Classic\Professions\TitanFishingMulti.lua
 Classic\Professions\TitanHerbalismMulti.lua
 Classic\Professions\TitanLeatherworkingMulti.lua
 Classic\Professions\TitanMiningMulti.lua
 Classic\Professions\TitanSkinningMulti.lua
 Classic\Professions\TitanTailoringMulti.lua
-Classic\TitanMasterMulti.lua
+Classic\TitanMasterMulti-ClassicEra.lua
