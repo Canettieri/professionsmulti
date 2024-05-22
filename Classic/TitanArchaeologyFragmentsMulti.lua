@@ -14,6 +14,7 @@ local name, count, maximun, required = {}, {}, {}, {}
 local varName = {
 	"Vrykul",
 	"Troll",
+	"Tolvir",
 	"Orc",
 	"Nerubian",
 	"NightElf",
@@ -23,17 +24,15 @@ local varName = {
 }
 
 local icon = {
-	"|TInterface\\Icons\\trade_archaeology_vrykul_artifactfragment:0|t",
-	"|TInterface\\Icons\\trade_archaeology_vrykul_artifactfragment:0|t",
-	"|TInterface\\Icons\\inv_misc_archaeology_mantidstatue_01:0|t",
+	"|TInterface\\Icons\\trade_archaeology_dwarf_artifactfragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_vrykul_artifactfragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_troll_artifactfragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_titan_fragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_orc_artifactfragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_nerubian_artifactfragment:0|t",
+	"|TInterface\\Icons\\trade_archaeology_highborne_artifactfragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_fossil_fern:0|t",
 	"|TInterface\\Icons\\trade_archaeology_draenei_artifactfragment:0|t",
-	"|TInterface\\Icons\\trade_archaeology_dwarf_artifactfragment:0|t",
 }
 
 -----------------------------------------------
@@ -46,7 +45,7 @@ end
 
 -----------------------------------------------
 local function UpdateAll(self)
-	for i = 1, 8 do
+	for i = 1, 9 do
 		local raceName, _, _, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo(i)
 		required[i] = numFragmentsRequired
 		count[i] = numFragmentsCollected
@@ -66,7 +65,7 @@ local eventsTable = {
 -----------------------------------------------
 local function GetButtonText(self, id)
 	local finalText = ""
-	for i = 1, 8 do
+	for i = 1, 9 do
 		local text = "|cFFf69112" .. name[i] .. ":|r " .. TitanUtils_GetHighlightText(count[i]) .. "/|cFF69FF69" .. required[i] .. "|r  "
 
 		-- Mesmo que você não esteja com a raça na barra, o plugin mostrará quando o artefato estiver pronto para ser feito.
@@ -85,7 +84,7 @@ end
 -----------------------------------------------
 local function GetTooltipText(self, id)
 	local continue = false
-	for i = 1, 8 do
+	for i = 1, 9 do
 		if (count[i] > 0) then
 			continue = true
 			break
@@ -96,7 +95,7 @@ local function GetTooltipText(self, id)
 
 	local finalNoTooltip = ""
 	local finalTooltip = ""
-	for i = 1, 8 do
+	for i = 1, 9 do
 		local tooltip = icon[i] .. "|cFFf69112 " .. name[i] .. ":|r\t" .. TitanUtils_GetHighlightText(count[i]) .. "/|cFF69FF69" .. required[i] .. "|r\n"
 		if required[i] ~= 0 and count[i] >= required[i] then
 			tooltip = icon[i] .. "|cFFFF2e2e " .. name[i] .. "!|r\t" .. TitanUtils_GetHighlightText(count[i]) .. "/|cFF69FF69" .. required[i] .. "|r\n"
@@ -132,7 +131,7 @@ local function PrepareMenu(self, id)
 	TitanPanelRightClickMenu_AddTitle(TitanPlugins[id].menuText)
 
 	local continue = false
-	for i = 1, 8 do
+	for i = 1, 9 do
 		if (count[i] > 0) then
 			continue = true
 			break
@@ -140,10 +139,13 @@ local function PrepareMenu(self, id)
 	end
 
 	if continue then
-		TitanPanelRightClickMenu_AddToggleIcon(id)
-		TitanPanelRightClickMenu_AddToggleLabelText(id)
-		TitanPanelRightClickMenu_AddSpacer()
-		TitanPanelRightClickMenu_AddTitle(L["tolltip"])
+		local info = UIDropDownMenu_CreateInfo();
+		info.text = ACE["TITAN_PANEL_MENU_SHOW_LABEL_TEXT"]
+		info.func = function()
+			TitanPanelRightClickMenu_ToggleVar({ id, "ShowLabelText", nil })
+		end
+		info.checked = TitanGetVar(id, var)
+		L_UIDropDownMenu_AddButton(info);
 
 		local info = UIDropDownMenu_CreateInfo();
 		info.text = L["hidehint"];
@@ -160,7 +162,7 @@ local function PrepareMenu(self, id)
 		TitanPanelRightClickMenu_AddSpacer()
 		TitanPanelRightClickMenu_AddTitle(L["archfragments"])
 
-		for i = 1, 8 do
+		for i = 1, 9 do
 			local info = UIDropDownMenu_CreateInfo();
 			info.text = name[i];
 			info.func = function() TitanToggleVar(id, varName[i]); TitanPanelButton_UpdateButton(id); end

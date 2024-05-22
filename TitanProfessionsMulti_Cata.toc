@@ -24,7 +24,7 @@ Classic\Core\Elib-3.0.lua
 Classic\Core\ProfessionsCore.lua
 Classic\Professions\TitanFirstAidMulti.lua
 Classic\TitanMasterMulti.lua
-#Classic\TitanArchaeologyFragmentsMulti.lua
+Classic\TitanArchaeologyFragmentsMulti.lua
 Professions\TitanAlchemyMulti.lua
 Professions\TitanBlacksmithingMulti.lua
 Professions\TitanCookingMulti.lua
