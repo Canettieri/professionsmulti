@@ -7,6 +7,7 @@ Special Thanks to Eliote.
 
 local ADDON_NAME, L = ...;
 local LibAddonCompat = LibStub("LibAddonCompat-1.0")
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local version = GetAddOnMetadata(ADDON_NAME, "Version")
 local ID = "ENCM"
 local ENCM, prevENCM = 0.0, -2

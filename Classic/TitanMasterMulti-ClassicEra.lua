@@ -10,6 +10,7 @@ local LibAddonCompat = LibStub("LibAddonCompat-1.0")
 local ACE = LibStub("AceLocale-3.0"):GetLocale("TitanClassic", true)
 local Elib = LibStub("Elib-3.0")
 L.Elib = Elib.Register
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local version = GetAddOnMetadata(ADDON_NAME, "Version")
 local ID = "TITAN_MSTRM"
 local PLAYER_NAME = "|c" .. RAID_CLASS_COLORS[select(2, UnitClass("player"))].colorStr .. UnitName("player")

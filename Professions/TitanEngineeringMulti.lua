@@ -6,6 +6,7 @@ Special Thanks to Eliote.
 --]]
 
 local ADDON_NAME, L = ...;
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local version = GetAddOnMetadata(ADDON_NAME, "Version")
 local ID = "ENGM"
 local ENGM, prevENGM = 0.0, -2
