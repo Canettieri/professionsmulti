@@ -82,68 +82,70 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(HERM - startskill).."]"
 	end
 
-	if HERM == 800 then
+	if HERM == 600 then -- Valor máximo do MoP (clássico)
 		HERMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif level > 49 and HERM == 175 then
-		HERMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif HERMmax == 0 then
-		HERMtext = "|cFFFF2e2e"..L["noprof"]
-	elseif HERM == HERMmax and level < 50 then
-		HERMtext = "|cFFFFFFFF"..HERM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
-	else
-		HERMtext = "|cFFFFFFFF"..HERM..HideText..SimpleText..BarBalanceText
-	end
+		--[[elseif level > 49 and HERM == 175 then
+            HERMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
+        elseif HERMmax == 0 then -- Sem profissão
+            HERMtext = "|cFFFF2e2e"..L["noprof"]
+        elseif HERM == HERMmax --[[and level < 50--]] then
+            HERMtext = "|cFFFFFFFF"..HERM.."|cFF69FF69! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+        else
+            HERMtext = "|cFFFFFFFF"..HERM..HideText..SimpleText..BarBalanceText
+        end
 
-	return L["herbalism"]..": ", HERMtext
-end
------------------------------------------------
-local function GetTooltipText(self, id)
-	local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..HERM -- Valor atual da prof.
-	if HERMIncrease > 0 then
-		totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..HERM+HERMIncrease
-	end
-	local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
-	if HERMIncrease > 0 then
-		bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..HERMIncrease
-	end
-	local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(HERMmax) -- O máximo que você pode ter no nível atual de perícia
+        return L["herbalism"]..": ", HERMtext
+    end
+    -----------------------------------------------
+    local function GetTooltipText(self, id)
+        local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..HERM -- Valor atual da prof.
+        if HERMIncrease > 0 then
+            totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..HERM+HERMIncrease
+        end
+        local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
+        if HERMIncrease > 0 then
+            bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..HERMIncrease
+        end
+        local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(HERMmax) -- O máximo que você pode ter no nível atual de perícia
 
-	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["alchemy"]..", "..L["inscription"] -- Texto de combinação
+        local Goodwith = "\n \n"..L["goodwith"].."\n"..L["alchemy"]..", "..L["inscription"] -- Texto de combinação
 
-	local CombinationText = Goodwith -- Tecto das combinações
-	if TitanGetVar(ID, "HideCombination") then
-		CombinationText = ""
-	end
+        local CombinationText = Goodwith -- Tecto das combinações
+        if TitanGetVar(ID, "HideCombination") then
+            CombinationText = ""
+        end
 
-	local ColorValueAccount -- Conta de ganho de perícia
-	if not HERM then
-		ColorValueAccount = ""
-	elseif HERM == 800 then
-		ColorValueAccount = "\n"..L["maxskill"]
-	elseif not startskill  or (HERM - startskill) == 0 then
-		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
-	elseif (HERM - startskill) > 0 then
-		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(HERM - startskill).."|r"
-	elseif (HERM - startskill) < 0 then -- Segurança quando existe mudança de exp.
-		ColorValueAccount = ""
-	end
+        local ColorValueAccount -- Conta de ganho de perícia
+        if not HERM then
+            ColorValueAccount = ""
+        elseif HERM == 600 then
+            ColorValueAccount = "\n"..L["maxskill"]
+        elseif not startskill  or (HERM - startskill) == 0 then
+            ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
+        elseif (HERM - startskill) > 0 then
+            ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(HERM - startskill).."|r"
+        elseif (HERM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+            ColorValueAccount = ""
+        end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if HERMmax == 800 then
-		warning = ""
-	elseif HERM == HERMmax and level < 50 and HERM ~= 175 then
-		warning = L["warning"]
-	elseif HERM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
-		warning = ""
-	else
-		warning = ""
-	end
+        --[[
+        local warning -- Aviso de que não está mais aprendendo
+        if HERMmax == 800 then
+            warning = ""
+        elseif HERM == HERMmax and level < 50 and HERM ~= 175 then
+            warning = L["warning"]
+        elseif HERM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
+            warning = ""
+        else
+            warning = ""
+        end
+        --]]
 
 	local ValueText = "" -- Difere com e sem profissão
 	if HERM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText--[[..warning--]]
 	end
 
 	return ValueText

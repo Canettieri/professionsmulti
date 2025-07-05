@@ -82,92 +82,94 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(BLAM - startskill).."]"
 	end
 
-	if BLAM == 800 then
+	if BLAM == 600 then -- Valor máximo do MoP (clássico)
 		BLAMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif level > 49 and BLAM == 175 then
-		BLAMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif BLAMmax == 0 then
-		BLAMtext = "|cFFFF2e2e"..L["noprof"]
-	elseif BLAM == BLAMmax and level < 50 then
-		BLAMtext = "|cFFFFFFFF"..BLAM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
-	else
-		BLAMtext = "|cFFFFFFFF"..BLAM..HideText..SimpleText..BarBalanceText
-	end
+		--[[elseif level > 49 and BLAM == 175 then
+            BLAMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
+        elseif BLAMmax == 0 then -- Sem profissão
+            BLAMtext = "|cFFFF2e2e"..L["noprof"]
+        elseif BLAM == BLAMmax --[[and level < 50--]] then
+            BLAMtext = "|cFFFFFFFF"..BLAM.."|cFF69FF69! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+        else
+            BLAMtext = "|cFFFFFFFF"..BLAM..HideText..SimpleText..BarBalanceText
+        end
 
-	return L["blacksmithing"]..": ", BLAMtext
-end
------------------------------------------------
-local function GetTooltipText(self, id)
-	local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..BLAM
-	if BLAMIncrease > 0 then
-		totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..BLAM+BLAMIncrease
-	end
-	local bonusText = ""
-	if BLAMIncrease > 0 then
-		bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..BLAMIncrease
-	end
-	local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(BLAMmax)
+        return L["blacksmithing"]..": ", BLAMtext
+    end
+    -----------------------------------------------
+    local function GetTooltipText(self, id)
+        local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..BLAM
+        if BLAMIncrease > 0 then
+            totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..BLAM+BLAMIncrease
+        end
+        local bonusText = ""
+        if BLAMIncrease > 0 then
+            bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..BLAMIncrease
+        end
+        local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(BLAMmax)
 
-	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["mining"] -- Texto de combinação
+        local Goodwith = "\n \n"..L["goodwith"].."\n"..L["mining"] -- Texto de combinação
 
-	local CombinationText = Goodwith -- Tecto das combinações
-	if TitanGetVar(ID, "HideCombination") then
-		CombinationText = ""
-	end
+        local CombinationText = Goodwith -- Tecto das combinações
+        if TitanGetVar(ID, "HideCombination") then
+            CombinationText = ""
+        end
 
-	local ColorValueAccount -- Conta de ganho de perícia
-	if not BLAM then
-		ColorValueAccount = ""
-	elseif BLAM == 800 then
-		ColorValueAccount = "\n"..L["maxskill"]
-	elseif not startskill  or (BLAM - startskill) == 0 then
-		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
-	elseif (BLAM - startskill) > 0 then
-		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(BLAM - startskill).."|r"
-	elseif (BLAM - startskill) < 0 then -- Segurança quando existe mudança de exp.
-		ColorValueAccount = ""
-	end
+        local ColorValueAccount -- Conta de ganho de perícia
+        if not BLAM then
+            ColorValueAccount = ""
+        elseif BLAM == 600 then
+            ColorValueAccount = "\n"..L["maxskill"]
+        elseif not startskill  or (BLAM - startskill) == 0 then
+            ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
+        elseif (BLAM - startskill) > 0 then
+            ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(BLAM - startskill).."|r"
+        elseif (BLAM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+            ColorValueAccount = ""
+        end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if BLAMmax == 800 then
-		warning = ""
-	elseif BLAM == BLAMmax and level < 50 and BLAM ~= 175 then
-		warning = L["warning"]
-	elseif BLAM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
-		warning = ""
-	else
-		warning = ""
-	end
+        --[[
+        local warning -- Aviso de que não está mais aprendendo
+        if BLAMmax == 800 then
+            warning = ""
+        elseif BLAM == BLAMmax and level < 50 and BLAM ~= 175 then
+            warning = L["warning"]
+        elseif BLAM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
+            warning = ""
+        else
+            warning = ""
+        end
+        --]]
 
-	local ValueText = "" -- Difere com e sem profissão
-	if BLAM == 0 then
-		ValueText = L["noskill"]..Goodwith
-	else
-		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText..warning
-	end
+        local ValueText = "" -- Difere com e sem profissão
+        if BLAM == 0 then
+            ValueText = L["noskill"]..Goodwith
+        else
+            ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText--[[..warning--]]
+        end
 
-	return ValueText
-end
------------------------------------------------
-L.Elib({
-	id = ID,
-	name = "Titan|c22fdce08 "..L["blacksmithing"].."|r".." Multi",
-	tooltip = L["blacksmithing"],
-	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_blacksmithing" or "Interface\\Icons\\trade_blacksmithing",
-	category = "Profession",
-	version = version,
-	onUpdate = OnUpdate,
-	onClick = OnClick,
-	getButtonText = GetButtonText,
-	getTooltipText = GetTooltipText,
-	prepareMenu = L.PrepareProfessionsMenu,
-	savedVariables = {
-		ShowIcon = 1,
-		DisplayOnRightSide = false,
-		HideMax = false,
-		SimpleBonus = true,
-		ShowBarBalance = false,
-		ShowLabelText = false,
-		HideCombination = true,
-	}
-})
+        return ValueText
+    end
+    -----------------------------------------------
+    L.Elib({
+        id = ID,
+        name = "Titan|c22fdce08 "..L["blacksmithing"].."|r".." Multi",
+        tooltip = L["blacksmithing"],
+        icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_blacksmithing" or "Interface\\Icons\\trade_blacksmithing",
+        category = "Profession",
+        version = version,
+        onUpdate = OnUpdate,
+        onClick = OnClick,
+        getButtonText = GetButtonText,
+        getTooltipText = GetTooltipText,
+        prepareMenu = L.PrepareProfessionsMenu,
+        savedVariables = {
+            ShowIcon = 1,
+            DisplayOnRightSide = false,
+            HideMax = false,
+            SimpleBonus = true,
+            ShowBarBalance = false,
+            ShowLabelText = false,
+            HideCombination = true,
+        }
+    })

@@ -82,68 +82,70 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(JEWM - startskill).."]"
 	end
 
-	if JEWM == 800 then
+	if JEWM == 600 then -- Valor máximo do MoP (clássico)
 		JEWMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif level > 49 and JEWM == 175 then
-		JEWMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif JEWMmax == 0 then
-		JEWMtext = "|cFFFF2e2e"..L["noprof"]
-	elseif JEWM == JEWMmax and level < 50 then
-		JEWMtext = "|cFFFFFFFF"..JEWM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
-	else
-		JEWMtext = "|cFFFFFFFF"..JEWM..HideText..SimpleText..BarBalanceText
-	end
+		--[[elseif level > 49 and JEWM == 175 then
+            JEWMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
+        elseif JEWMmax == 0 then -- Sem profissão
+            JEWMtext = "|cFFFF2e2e"..L["noprof"]
+        elseif JEWM == JEWMmax --[[and level < 50--]] then
+            JEWMtext = "|cFFFFFFFF"..JEWM.."|cFF69FF69! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+        else
+            JEWMtext = "|cFFFFFFFF"..JEWM..HideText..SimpleText..BarBalanceText
+        end
 
-	return L["jewelcrafting"]..": ", JEWMtext
-end
------------------------------------------------
-local function GetTooltipText(self, id)
-	local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..JEWM -- Valor atual da prof.
-	if JEWMIncrease > 0 then
-		totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..JEWM+JEWMIncrease
-	end
-	local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
-	if JEWMIncrease > 0 then
-		bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..JEWMIncrease
-	end
-	local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(JEWMmax) -- O máximo que você pode ter no nível atual de perícia
+        return L["jewelcrafting"]..": ", JEWMtext
+    end
+    -----------------------------------------------
+    local function GetTooltipText(self, id)
+        local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..JEWM -- Valor atual da prof.
+        if JEWMIncrease > 0 then
+            totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..JEWM+JEWMIncrease
+        end
+        local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
+        if JEWMIncrease > 0 then
+            bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..JEWMIncrease
+        end
+        local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(JEWMmax) -- O máximo que você pode ter no nível atual de perícia
 
-	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["mining"] -- Texto de combinação
+        local Goodwith = "\n \n"..L["goodwith"].."\n"..L["mining"] -- Texto de combinação
 
-	local CombinationText = Goodwith -- Tecto das combinações
-	if TitanGetVar(ID, "HideCombination") then
-		CombinationText = ""
-	end
+        local CombinationText = Goodwith -- Tecto das combinações
+        if TitanGetVar(ID, "HideCombination") then
+            CombinationText = ""
+        end
 
-	local ColorValueAccount -- Conta de ganho de perícia
-	if not JEWM then
-		ColorValueAccount = ""
-	elseif JEWM == 800 then
-		ColorValueAccount = "\n"..L["maxskill"]
-	elseif not startskill  or (JEWM - startskill) == 0 then
-		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
-	elseif (JEWM - startskill) > 0 then
-		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(JEWM - startskill).."|r"
-	elseif (JEWM - startskill) < 0 then -- Segurança quando existe mudança de exp.
-		ColorValueAccount = ""
-	end
+        local ColorValueAccount -- Conta de ganho de perícia
+        if not JEWM then
+            ColorValueAccount = ""
+        elseif JEWM == 600 then
+            ColorValueAccount = "\n"..L["maxskill"]
+        elseif not startskill  or (JEWM - startskill) == 0 then
+            ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
+        elseif (JEWM - startskill) > 0 then
+            ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(JEWM - startskill).."|r"
+        elseif (JEWM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+            ColorValueAccount = ""
+        end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if JEWMmax == 800 then
-		warning = ""
-	elseif JEWM == JEWMmax and level < 50 and JEWM ~= 175 then
-		warning = L["warning"]
-	elseif JEWM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
-		warning = ""
-	else
-		warning = ""
-	end
+        --[[
+        local warning -- Aviso de que não está mais aprendendo
+        if JEWMmax == 800 then
+            warning = ""
+        elseif JEWM == JEWMmax and level < 50 and JEWM ~= 175 then
+            warning = L["warning"]
+        elseif JEWM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
+            warning = ""
+        else
+            warning = ""
+        end
+        --]]
 
 	local ValueText = "" -- Difere com e sem profissão
 	if JEWM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText--[[..warning--]]
 	end
 
 	return ValueText

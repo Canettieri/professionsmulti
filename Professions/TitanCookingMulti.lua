@@ -69,92 +69,94 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(COOM - startskill).."]"
 	end
 
-	if COOM == 800 then
+	if COOM == 600 then -- Valor máximo do MoP (clássico)
 		COOMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif level > 49 and COOM == 175 then
-		COOMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif COOMmax == 0 then
-		COOMtext = "|cFFFF2e2e"..L["noprof"]
-	elseif COOM == COOMmax and level < 50 then
-		COOMtext = "|cFFFFFFFF"..COOM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
-	else
-		COOMtext = "|cFFFFFFFF"..COOM..HideText..SimpleText..BarBalanceText
-	end
+		--[[elseif level > 49 and COOM == 175 then
+            COOMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
+        elseif COOMmax == 0 then -- Sem profissão
+            COOMtext = "|cFFFF2e2e"..L["noprof"]
+        elseif COOM == COOMmax --[[and level < 50--]] then
+            COOMtext = "|cFFFFFFFF"..COOM.."|cFF69FF69! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+        else
+            COOMtext = "|cFFFFFFFF"..COOM..HideText..SimpleText..BarBalanceText
+        end
 
-	return L["cooking"]..": ", COOMtext
-end
------------------------------------------------
-local function GetTooltipText(self, id)
-	local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..COOM -- Valor atual da prof.
-	if COOMIncrease > 0 then
-		totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..COOM+COOMIncrease
-	end
-	local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
-	if COOMIncrease > 0 then
-		bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..COOMIncrease
-	end
-	local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(COOMmax) -- O máxim oque vocêr pode ter no nível atual de perícia
+        return L["cooking"]..": ", COOMtext
+    end
+    -----------------------------------------------
+    local function GetTooltipText(self, id)
+        local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..COOM -- Valor atual da prof.
+        if COOMIncrease > 0 then
+            totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..COOM+COOMIncrease
+        end
+        local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
+        if COOMIncrease > 0 then
+            bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..COOMIncrease
+        end
+        local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(COOMmax) -- O máxim oque vocêr pode ter no nível atual de perícia
 
-	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["fishing"] -- Texto de combinação
+        local Goodwith = "\n \n"..L["goodwith"].."\n"..L["fishing"] -- Texto de combinação
 
-	local CombinationText = Goodwith -- Tecto das combinações
-	if TitanGetVar(ID, "HideCombination") then
-		CombinationText = ""
-	end
+        local CombinationText = Goodwith -- Tecto das combinações
+        if TitanGetVar(ID, "HideCombination") then
+            CombinationText = ""
+        end
 
-	local ColorValueAccount -- Conta de ganho de perícia
-	if not COOM then
-		ColorValueAccount = ""
-	elseif COOM == 800 then
-		ColorValueAccount = "\n"..L["maxskill"]
-	elseif not startskill  or (COOM - startskill) == 0 then
-		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
-	elseif (COOM - startskill) > 0 then
-		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(COOM - startskill).."|r"
-	elseif (COOM - startskill) < 0 then -- Segurança quando existe mudança de exp.
-		ColorValueAccount = ""
-	end
+        local ColorValueAccount -- Conta de ganho de perícia
+        if not COOM then
+            ColorValueAccount = ""
+        elseif COOM == 600 then -- Valor máximo do MoP (clássico)
+            ColorValueAccount = "\n"..L["maxskill"]
+        elseif not startskill  or (COOM - startskill) == 0 then
+            ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
+        elseif (COOM - startskill) > 0 then
+            ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(COOM - startskill).."|r"
+        elseif (COOM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+            ColorValueAccount = ""
+        end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if COOMmax == 800 then
-		warning = ""
-	elseif COOM == COOMmax and level < 50 and COOM ~= 175 then
-		warning = L["warning"]
-	elseif COOM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
-		warning = ""
-	else
-		warning = ""
-	end
+        --[[
+        local warning -- Aviso de que não está mais aprendendo
+        if COOMmax == 800 then
+            warning = ""
+        elseif COOM == COOMmax and level < 50 and COOM ~= 175 then
+            warning = L["warning"]
+        elseif COOM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
+            warning = ""
+        else
+            warning = ""
+        end
+        --]]
 
-	local ValueText = "" -- Difere com e sem profissão
-	if COOM == 0 then
-		ValueText = L["noskill"]..Goodwith
-	else
-		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText..warning
-	end
+        local ValueText = "" -- Difere com e sem profissão
+        if COOM == 0 then
+            ValueText = L["noskill"]..Goodwith
+        else
+            ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText--[[..warning]]--
+        end
 
-	return ValueText
-end
------------------------------------------------
-L.Elib({
-	id = ID,
-	name = "Titan|c113bafe3 "..L["cooking"].."|r".." Multi",
-	tooltip = L["cooking"],
-	icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_cooking" or "Interface\\Icons\\inv_misc_food_15",
-	category = "Profession",
-	version = version,
-	onUpdate = OnUpdate,
-	onClick = OnClick,
-	getButtonText = GetButtonText,
-	getTooltipText = GetTooltipText,
-	prepareMenu = L.PrepareProfessionsMenu,
-	savedVariables = {
-		ShowIcon = 1,
-		DisplayOnRightSide = false,
-		HideMax = false,
-		SimpleBonus = true,
-		ShowBarBalance = false,
-		ShowLabelText = false,
-		HideCombination = true,
-	}
-})
+        return ValueText
+    end
+    -----------------------------------------------
+    L.Elib({
+        id = ID,
+        name = "Titan|c113bafe3 "..L["cooking"].."|r".." Multi",
+        tooltip = L["cooking"],
+        icon = (expansionLevel >= 9) and "Interface\\Icons\\ui_profession_cooking" or "Interface\\Icons\\inv_misc_food_15",
+        category = "Profession",
+        version = version,
+        onUpdate = OnUpdate,
+        onClick = OnClick,
+        getButtonText = GetButtonText,
+        getTooltipText = GetTooltipText,
+        prepareMenu = L.PrepareProfessionsMenu,
+        savedVariables = {
+            ShowIcon = 1,
+            DisplayOnRightSide = false,
+            HideMax = false,
+            SimpleBonus = true,
+            ShowBarBalance = false,
+            ShowLabelText = false,
+            HideCombination = true,
+        }
+    })

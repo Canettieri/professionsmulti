@@ -82,68 +82,70 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(TAIM - startskill).."]"
 	end
 
-	if TAIM == 800 then
+	if TAIM == 600 then -- Valor máximo do MoP (clássico)
 		TAIMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif level > 49 and TAIM == 175 then
-		TAIMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif TAIMmax == 0 then
-		TAIMtext = "|cFFFF2e2e"..L["noprof"]
-	elseif TAIM == TAIMmax and level < 50 then
-		TAIMtext = "|cFFFFFFFF"..TAIM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
-	else
-		TAIMtext = "|cFFFFFFFF"..TAIM..HideText..SimpleText..BarBalanceText
-	end
+		--[[elseif level > 49 and TAIM == 175 then
+            TAIMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
+        elseif TAIMmax == 0 then -- Sem profissão
+            TAIMtext = "|cFFFF2e2e"..L["noprof"]
+        elseif TAIM == TAIMmax --[[and level < 50--]] then
+            TAIMtext = "|cFFFFFFFF"..TAIM.."|cFF69FF69! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+        else
+            TAIMtext = "|cFFFFFFFF"..TAIM..HideText..SimpleText..BarBalanceText
+        end
 
-	return L["tailoring"]..": ", TAIMtext
-end
------------------------------------------------
-local function GetTooltipText(self, id)
-	local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..TAIM -- Valor atual da prof.
-	if TAIMIncrease > 0 then
-		totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..TAIM+TAIMIncrease
-	end
-	local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
-	if TAIMIncrease > 0 then
-		bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..TAIMIncrease
-	end
-	local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(TAIMmax) -- O máximo que você pode ter no nível atual de perícia
+        return L["tailoring"]..": ", TAIMtext
+    end
+    -----------------------------------------------
+    local function GetTooltipText(self, id)
+        local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..TAIM -- Valor atual da prof.
+        if TAIMIncrease > 0 then
+            totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..TAIM+TAIMIncrease
+        end
+        local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
+        if TAIMIncrease > 0 then
+            bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..TAIMIncrease
+        end
+        local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(TAIMmax) -- O máximo que você pode ter no nível atual de perícia
 
-	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["enchanting"] -- Texto de combinação
+        local Goodwith = "\n \n"..L["goodwith"].."\n"..L["enchanting"] -- Texto de combinação
 
-	local CombinationText = Goodwith -- Tecto das combinações
-	if TitanGetVar(ID, "HideCombination") then
-		CombinationText = ""
-	end
+        local CombinationText = Goodwith -- Tecto das combinações
+        if TitanGetVar(ID, "HideCombination") then
+            CombinationText = ""
+        end
 
-	local ColorValueAccount -- Conta de ganho de perícia
-	if not TAIM then
-		ColorValueAccount = ""
-	elseif TAIM == 800 then
-		ColorValueAccount = "\n"..L["maxskill"]
-	elseif not startskill  or (TAIM - startskill) == 0 then
-		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
-	elseif (TAIM - startskill) > 0 then
-		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(TAIM - startskill).."|r"
-	elseif (TAIM - startskill) < 0 then -- Segurança quando existe mudança de exp.
-		ColorValueAccount = ""
-	end
+        local ColorValueAccount -- Conta de ganho de perícia
+        if not TAIM then
+            ColorValueAccount = ""
+        elseif TAIM == 600 then
+            ColorValueAccount = "\n"..L["maxskill"]
+        elseif not startskill  or (TAIM - startskill) == 0 then
+            ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
+        elseif (TAIM - startskill) > 0 then
+            ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(TAIM - startskill).."|r"
+        elseif (TAIM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+            ColorValueAccount = ""
+        end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if TAIMmax == 800 then
-		warning = ""
-	elseif TAIM == TAIMmax and level < 50 and TAIM ~= 175 then
-		warning = L["warning"]
-	elseif TAIM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
-		warning = ""
-	else
-		warning = ""
-	end
+        --[[
+        local warning -- Aviso de que não está mais aprendendo
+        if TAIMmax == 800 then
+            warning = ""
+        elseif TAIM == TAIMmax and level < 50 and TAIM ~= 175 then
+            warning = L["warning"]
+        elseif TAIM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
+            warning = ""
+        else
+            warning = ""
+        end
+        --]]
 
 	local ValueText = "" -- Difere com e sem profissão
 	if TAIM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..bonusText..totalTooltip..maxSkill..ColorValueAccount..CombinationText--[[..warning--]]
 	end
 
 	return ValueText

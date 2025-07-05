@@ -1,4 +1,4 @@
-## Interface: 40402
+## Interface: 50500
 ## Title: Titan Panel [|cff336699Professions|r] Multi! |cff00aa00@project-version@ Classic|r
 ## Notes: Track all professions! Right-click on Titan Panel, go to "Profession" tab and enjoy.
 ## Notes-ptBR: Rastreie todas profissões! Clique com o botão direito no Painel Titan, vá na aba "Profissão" e aproveite.
@@ -8,7 +8,7 @@
 ## Notes-esES: ¡Seguir todas las profesiones! Haga clic derecho en Titan Panel, vaya a la pestaña "Profesión" y disfrute.
 ## Author: Canettieri
 ## Version: @project-version@
-## Dependencies: TitanClassic
+## Dependencies: Titan
 ## X-Curse-Project-ID: 94459
 ## X-Wago-ID: e56nyWN9
 Core\languages\enUS-default.lua
