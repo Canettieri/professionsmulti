@@ -6,7 +6,7 @@ Special Thanks to Eliote.
 --]]
 
 local ADDON_NAME, L = ...;
-local ACE = LibStub("AceLocale-3.0"):GetLocale("TitanClassic", true)
+local ACE = LibStub("AceLocale-3.0"):GetLocale("Titan", true)
 local Elib = LibStub("Elib-3.0")
 L.Elib = Elib.Register
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
@@ -94,7 +94,7 @@ local function GetTooltipText(self, id)
 		-- Valor atual
 		textoFinal = textoFinal .. "\t|cFFFFFFFF" .. profs[i][INFOS_INDEX.SKILL]
 		-- Maximo
-		if profs[i][INFOS_INDEX.SKILL] < 800 then
+		if profs[i][INFOS_INDEX.SKILL] < 600 then
 			textoFinal = textoFinal .. "|r/|cFFFF2e2e" .. profs[i][INFOS_INDEX.MAX]
 		end
 		-- Bonus

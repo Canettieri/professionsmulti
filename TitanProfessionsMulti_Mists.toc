@@ -20,11 +20,12 @@ Core\languages\itIT.lua
 Core\languages\koKR.lua
 Core\languages\ptBR.lua
 Core\languages\ruRU.lua
-Classic\Core\Elib-3.0.lua
-Classic\Core\ProfessionsCore.lua
+Core\ElioteDropDownMenu-1.0.lua
+Core\Elib-4.0.lua
+Core\ProfessionsCore.lua
 Classic\Professions\TitanFirstAidMulti.lua
-Classic\TitanMasterMulti.lua
 Classic\TitanArchaeologyFragmentsMulti.lua
+TitanMasterMulti.lua
 Professions\TitanAlchemyMulti.lua
 Professions\TitanBlacksmithingMulti.lua
 Professions\TitanCookingMulti.lua

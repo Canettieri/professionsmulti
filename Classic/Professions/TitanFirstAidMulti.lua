@@ -92,28 +92,29 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if FIRMmax == 0 then
 		ColorValueAccount = ""
-	elseif FIRM == 450 then
+	elseif FIRM == 600 then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (FIRM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
 	elseif (FIRM - startskill) > 0 then
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(FIRM - startskill).."|r"
 	end
-
+ --[[
 	local warning -- Aviso de que não está mais aprendendo
-	if FIRMmax == 450 then
+	if FIRMmax == 600 then
 		warning = ""
 	elseif FIRM == FIRMmax then
 		warning = L["warning"]
 	else
 		warning = ""
 	end
+	]]--
 
 	local ValueText = "" -- Difere com e sem profissão
 	if FIRM == 0 then
 		ValueText = L["nosecskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..Goodwith..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..Goodwith--[[..warning]]--
 	end
 
 	return ValueText

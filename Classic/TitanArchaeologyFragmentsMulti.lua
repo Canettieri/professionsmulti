@@ -13,6 +13,10 @@ local ICON = "Interface\\Icons\\inv_misc_shovel_01"
 
 local name, count, maximun, required = {}, {}, {}, {}
 local varName = {
+	"UNUSED", -- é como está listado na API.
+	"Mogu",
+	"Pandaren",
+	"Mantid",
 	"Vrykul",
 	"Troll",
 	"Tolvir",
@@ -25,6 +29,10 @@ local varName = {
 }
 
 local icon = {
+	"|TInterface\\Icons\\trade_archaeology_vrykul_artifactfragment:0|t", -- Só placeholder.
+	"|TInterface\\Icons\\trade_archaeology_vrykul_artifactfragment:0|t",
+	"|TInterface\\Icons\\trade_archaeology_vrykul_artifactfragment:0|t",
+	"|TInterface\\Icons\\inv_misc_archaeology_mantidstatue_01:0|t",
 	"|TInterface\\Icons\\trade_archaeology_dwarf_artifactfragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_vrykul_artifactfragment:0|t",
 	"|TInterface\\Icons\\trade_archaeology_troll_artifactfragment:0|t",
@@ -46,7 +54,7 @@ end
 
 -----------------------------------------------
 local function UpdateAll(self)
-	for i = 1, 9 do
+	for i = 2, 13 do
 		local raceName, _, _, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo(i)
 		required[i] = numFragmentsRequired
 		count[i] = numFragmentsCollected
@@ -66,7 +74,7 @@ local eventsTable = {
 -----------------------------------------------
 local function GetButtonText(self, id)
 	local finalText = ""
-	for i = 1, 9 do
+	for i = 2, 13 do
 		local text = "|cFFf69112" .. name[i] .. ":|r " .. TitanUtils_GetHighlightText(count[i]) .. "/|cFF69FF69" .. required[i] .. "|r  "
 
 		-- Mesmo que você não esteja com a raça na barra, o plugin mostrará quando o artefato estiver pronto para ser feito.
@@ -85,7 +93,7 @@ end
 -----------------------------------------------
 local function GetTooltipText(self, id)
 	local continue = false
-	for i = 1, 9 do
+	for i = 2, 13 do
 		if (count[i] > 0) then
 			continue = true
 			break
@@ -96,7 +104,7 @@ local function GetTooltipText(self, id)
 
 	local finalNoTooltip = ""
 	local finalTooltip = ""
-	for i = 1, 9 do
+	for i = 2, 13 do
 		local tooltip = icon[i] .. "|cFFf69112 " .. name[i] .. ":|r\t" .. TitanUtils_GetHighlightText(count[i]) .. "/|cFF69FF69" .. required[i] .. "|r\n"
 		if required[i] ~= 0 and count[i] >= required[i] then
 			tooltip = icon[i] .. "|cFFFF2e2e " .. name[i] .. "!|r\t" .. TitanUtils_GetHighlightText(count[i]) .. "/|cFF69FF69" .. required[i] .. "|r\n"
@@ -128,11 +136,17 @@ local function GetTooltipText(self, id)
 end
 
 -----------------------------------------------
-local function PrepareMenu(self, id)
-	TitanPanelRightClickMenu_AddTitle(TitanPlugins[id].menuText)
+function PrepareMenu(eddm, self, id)
+	eddm.UIDropDownMenu_AddButton({
+		text = TitanPlugins[id].menuText,
+		hasArrow = false,
+		isTitle = true,
+		isUninteractable = true,
+		notCheckable = true
+	})
 
 	local continue = false
-	for i = 1, 9 do
+	for i = 2, 13 do
 		if (count[i] > 0) then
 			continue = true
 			break
@@ -140,41 +154,60 @@ local function PrepareMenu(self, id)
 	end
 
 	if continue then
-		local info = UIDropDownMenu_CreateInfo();
-		info.text = ACE["TITAN_PANEL_MENU_SHOW_LABEL_TEXT"]
-		info.func = function()
-			TitanPanelRightClickMenu_ToggleVar({ id, "ShowLabelText", nil })
-		end
-		info.checked = TitanGetVar(id, var)
-		L_UIDropDownMenu_AddButton(info);
+		local info = {};
+		info = {};
+		info.text = L["buttonText"];
+		info.notClickable = true
+		info.notCheckable = true
+		info.isTitle = true
+		eddm.UIDropDownMenu_AddButton(info);
 
-		local info = UIDropDownMenu_CreateInfo();
+		local info = {};
 		info.text = L["hidehint"];
 		info.func = function() TitanToggleVar(id, "HideHint"); TitanPanelButton_UpdateButton(id); end
 		info.checked = TitanGetVar(id, "HideHint");
-		L_UIDropDownMenu_AddButton(info);
+		info.keepShownOnClick = true
+		eddm.UIDropDownMenu_AddButton(info);
 
-		local info = UIDropDownMenu_CreateInfo();
+		local info = {};
 		info.text = L["displaynofrag"];
 		info.func = function() TitanToggleVar(id, "DisplayNoFrag"); TitanPanelButton_UpdateButton(id); end
 		info.checked = TitanGetVar(id, "DisplayNoFrag");
-		L_UIDropDownMenu_AddButton(info);
+		info.keepShownOnClick = true
+		eddm.UIDropDownMenu_AddButton(info);
 
-		TitanPanelRightClickMenu_AddSpacer()
-		TitanPanelRightClickMenu_AddTitle(L["archfragments"])
+		local info = {};
+		info.text = L["archfragments"];
+		info.notClickable = true
+		info.notCheckable = true
+		info.isTitle = true
+		eddm.UIDropDownMenu_AddButton(info);
 
-		for i = 1, 9 do
-			local info = UIDropDownMenu_CreateInfo();
+		for i = 2, 13 do
+			local info = {};
 			info.text = name[i];
 			info.func = function() TitanToggleVar(id, varName[i]); TitanPanelButton_UpdateButton(id); end
-			info.keepShownOnClick = true
 			info.checked = TitanGetVar(id, varName[i]);
-			L_UIDropDownMenu_AddButton(info);
+			info.keepShownOnClick = true
+			eddm.UIDropDownMenu_AddButton(info);
 		end
 	end
 
-	TitanPanelRightClickMenu_AddSpacer()
-	TitanPanelRightClickMenu_AddCommand(ACE["TITAN_PANEL_MENU_HIDE"], id, TITAN_PANEL_MENU_FUNC_HIDE);
+	eddm.UIDropDownMenu_AddSpace();
+
+	eddm.UIDropDownMenu_AddButton({
+		notCheckable = true,
+		text = ACE["TITAN_PANEL_MENU_HIDE"],
+		func = function() TitanPanelRightClickMenu_Hide(id) end
+	})
+
+	eddm.UIDropDownMenu_AddSeparator();
+
+	info = {};
+	info.text = CLOSE;
+	info.notCheckable = true
+	info.keepShownOnClick = false
+	eddm.UIDropDownMenu_AddButton(info);
 end
 -----------------------------------------------
 L.Elib({
