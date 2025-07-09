@@ -91,6 +91,11 @@ local function GetTooltipText(self, id)
 
 	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["alchemy"] -- Texto de combinação
 
+	local CombinationText = Goodwith -- Tecto das combinações
+	if TitanGetVar(ID, "HideCombination") then
+		CombinationText = ""
+	end
+
 	local maxtext = "\n"..L["maxtext"]..TitanUtils_GetHighlightText(HERMmax)
 
 	local ColorValueAccount -- Conta de ganho de perícia
@@ -117,7 +122,7 @@ local function GetTooltipText(self, id)
 	if HERM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..Goodwith..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
 	end
 
 	return ValueText

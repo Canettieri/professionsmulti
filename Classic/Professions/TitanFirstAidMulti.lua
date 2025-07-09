@@ -87,6 +87,11 @@ local function GetTooltipText(self, id)
 
 	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["tailoring"] -- Texto de combinação
 
+	local CombinationText = Goodwith -- Tecto das combinações
+	if TitanGetVar(ID, "HideCombination") then
+		CombinationText = ""
+	end
+
 	local maxtext = "\n"..L["maxtext"]..TitanUtils_GetHighlightText(FIRMmax)
 
 	local ColorValueAccount -- Conta de ganho de perícia
@@ -100,7 +105,7 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(FIRM - startskill).."|r"
 	end
  --[[
-	local warning -- Aviso de que não está mais aprendendo
+	local warning -- Aviso de que não está mais aprendendo. Tirei do clássico porque tirei dos outros, que também funcionam com o clássico.
 	if FIRMmax == 600 then
 		warning = ""
 	elseif FIRM == FIRMmax then
@@ -114,7 +119,7 @@ local function GetTooltipText(self, id)
 	if FIRM == 0 then
 		ValueText = L["nosecskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..Goodwith--[[..warning]]--
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText--[[..warning]]--
 	end
 
 	return ValueText
