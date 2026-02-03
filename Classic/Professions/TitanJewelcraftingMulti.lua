@@ -1,5 +1,5 @@
 --[[
-Description: This plugin is part of the "Titan Panel [Professions] Multi" addon. It shows your Engineering skill level.
+Description: This plugin is part of the "Titan Panel [Professions] Multi" addon. It shows your Jewelcrafting skill level.
 Site: https://www.curseforge.com/wow/addons/titan-panel-professions-multi
 Author: Canettieri
 Special Thanks to Eliote.
@@ -9,10 +9,10 @@ local ADDON_NAME, L = ...;
 local LibAddonCompat = LibStub("LibAddonCompat-1.0")
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local version = GetAddOnMetadata(ADDON_NAME, "Version")
-local ID = "ENGM"
-local ENGM, prevENGM = 0.0, -2
-local ENGMmax = 0
-local ENGMIncrease = 0
+local ID = "JEWM"
+local JEWM, prevJEWM = 0.0, -2
+local JEWMmax = 0
+local JEWMIncrease = 0
 local startskill
 local profOffset
 -----------------------------------------------
@@ -31,31 +31,31 @@ local function OnUpdate(self, id)
 
 	if prof1 ~= nil then
 		local name, _, skillLevel, maxSkillLevel, _, offset, skillLine, IncreaseSkillLevel = LibAddonCompat:GetProfessionInfo(prof1)
-		if skillLine == 202 then
-			ENGM = skillLevel
-			ENGMmax = maxSkillLevel
-			ENGMIncrease = IncreaseSkillLevel
+		if skillLine == 755 then
+			JEWM = skillLevel
+			JEWMmax = maxSkillLevel
+			JEWMIncrease = IncreaseSkillLevel
 			profOffset = offset
 			if not startskill then startskill = skillLevel end
 		elseif prof2 ~= nil then
 			local name, _, skillLevel, maxSkillLevel, _, offset, skillLine, IncreaseSkillLevel = LibAddonCompat:GetProfessionInfo(prof2)
-			if skillLine == 202 then
-				ENGM = skillLevel
-				ENGMmax = maxSkillLevel
-				ENGMIncrease = IncreaseSkillLevel
+			if skillLine == 755 then
+				JEWM = skillLevel
+				JEWMmax = maxSkillLevel
+				JEWMIncrease = IncreaseSkillLevel
 				profOffset = offset
 				if not startskill then startskill = skillLevel end
 			end
 		end
 	end
 
-	if ENGM == prevENGM and ENGMmax == preENGMmax and prevENGMIncrease == ENGMIncrease then
+	if JEWM == prevJEWM and JEWMmax == preJEWMmax and prevJEWMIncrease == JEWMIncrease then
 		return
 	end
 
-	preENGMmax = ENGMmax
-	prevENGM = ENGM
-	prevENGMIncrease = ENGMIncrease
+	preJEWMmax = JEWMmax
+	prevJEWM = JEWM
+	prevJEWMIncrease = JEWMIncrease
 
 	TitanPanelButton_UpdateButton(id)
 	return true
@@ -72,69 +72,64 @@ local function GetMaxProfessionCap()
 end
 -----------------------------------------------
 local function GetButtonText(self, id)
-	local ENGMtext
+	local JEWMtext
 	local bonusText = ""
-	if ENGMIncrease and ENGMIncrease > 0 then -- Bônus da profissão
-		bonusText = "|r|cFFFFFFFF".." + |r|cFF69FF69"..ENGMIncrease.."|r|cFFFFFFFF "..L["bonus"].." =|r|cFF69FF69 "..(ENGM+ENGMIncrease)
+	if JEWMIncrease and JEWMIncrease > 0 then -- Bônus da profissão
+		bonusText = "|r|cFFFFFFFF".." + |r|cFF69FF69"..JEWMIncrease.."|r|cFFFFFFFF "..L["bonus"].." =|r|cFF69FF69 "..(JEWM+JEWMIncrease)
 	end
 	local HideText = "" -- Texto HideMax
 	if not TitanGetVar(ID, "HideMax") then
-		HideText = "|r/|cFFFF2e2e"..ENGMmax
+		HideText = "|r/|cFFFF2e2e"..JEWMmax
 	end
 	local SimpleText = bonusText -- Texto de bônus simples
-	if TitanGetVar(ID, "SimpleBonus") and ENGMIncrease > 0 then
-		SimpleText = "|r|cFFFFFFFF".." (+|r|cFF69FF69"..ENGMIncrease.."|r|cFFFFFFFF)"
+	if TitanGetVar(ID, "SimpleBonus") and JEWMIncrease > 0 then
+		SimpleText = "|r|cFFFFFFFF".." (+|r|cFF69FF69"..JEWMIncrease.."|r|cFFFFFFFF)"
 	end
 
 	local BarBalanceText = ""
-	if ENGMmax ~= 0 and (ENGM - startskill) > 0 and TitanGetVar(ID, "ShowBarBalance") then
-		BarBalanceText = " |cFF69FF69["..(ENGM - startskill).."]"
+	if JEWMmax ~= 0 and (JEWM - startskill) > 0 and TitanGetVar(ID, "ShowBarBalance") then
+		BarBalanceText = " |cFF69FF69["..(JEWM - startskill).."]"
 	end
 
-	if ENGMmax == 0 then
-		ENGMtext = "|cFFFF2e2e" .. L["noprof"]
-	elseif ENGM == ENGMmax then
+	if JEWMmax == 0 then
+		JEWMtext = "|cFFFF2e2e" .. L["noprof"]
+	elseif JEWM == JEWMmax then
 		local maxCap = GetMaxProfessionCap()
-		if ENGMmax == maxCap then
-			ENGMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		if JEWMmax == maxCap then
+			JEWMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
 		else
-			ENGMtext = "|cFFFFFFFF" .. ENGM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+			JEWMtext = "|cFFFFFFFF" .. JEWM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
 		end
 	else
-		ENGMtext = "|cFFFFFFFF" .. ENGM .. HideText .. SimpleText .. BarBalanceText
+		JEWMtext = "|cFFFFFFFF" .. JEWM .. HideText .. SimpleText .. BarBalanceText
 	end
 
-	return L["engineering"]..": ", ENGMtext
+	return L["jewelcrafting"]..": ", JEWMtext
 end
 -----------------------------------------------
 local function GetTooltipText(self, id)
-	local BonusTooltip = "\n"..L["craftsmanship"].."|r|cFFFFFFFF"..ENGM.." + |r|cFF69FF69"..ENGMIncrease.."|r|cFFFFFFFF "..L["bonus"].." =|r|cFF69FF69 "..(ENGM+ENGMIncrease) -- Bônus da profissão
+	local BonusTooltip = L["craftsmanship"].."|r|cFFFFFFFF"..JEWM.." + |r|cFF69FF69"..JEWMIncrease.."|r|cFFFFFFFF "..L["bonus"].." =|r|cFF69FF69 "..(JEWM+JEWMIncrease) -- Bônus da profissão
 
-	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["mining"] -- Texto de combinação
+	local Goodwith = L["goodwith"]..L["mining"] -- Texto de combinação
 
-	local CombinationText = Goodwith -- Tecto das combinações
-	if TitanGetVar(ID, "HideCombination") then
-		CombinationText = ""
-	end
-
-	local maxtext = "\n"..L["maxtext"]..TitanUtils_GetHighlightText(ENGMmax)
+	local maxtext = L["maxtext"]..TitanUtils_GetHighlightText(JEWMmax)
 
 	local ColorValueAccount -- Conta de ganho de perícia
-	if not ENGM then
+	if not JEWM then
 		ColorValueAccount = ""
-	elseif ENGM == GetMaxProfessionCap() then
-		ColorValueAccount = "\n"..L["maxskill"]
-	elseif not startskill  or (ENGM - startskill) == 0 then
-		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
-	elseif (ENGM - startskill) > 0 then
-		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(ENGM - startskill).."|r"
+	elseif JEWM == GetMaxProfessionCap() then
+		ColorValueAccount = "\r"..L["maxskill"]
+	elseif not startskill  or (JEWM - startskill) == 0 then
+		ColorValueAccount = "\r"..L["session"]..TitanUtils_GetHighlightText("0")
+	elseif (JEWM - startskill) > 0 then
+		ColorValueAccount = "\r"..L["session"].."|cFF69FF69"..(JEWM - startskill).."|r"
 	end
 
 	local ValueText = "" -- Difere com e sem profissão
-	if ENGM == 0 then
+	if JEWM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
+		ValueText = L["hint"]..L["info"]..BonusTooltip..maxtext..ColorValueAccount..Goodwith
 	end
 
 	return ValueText
@@ -142,9 +137,9 @@ end
 -----------------------------------------------
 L.Elib({
 	id = ID,
-	name = "Titan|c22fdce08 "..L["engineering"].."|r".." Multi",
-	tooltip = L["engineering"],
-	icon = "Interface\\Icons\\Trade_engineering.blp",
+	name = "Titan|c22fdce08 "..L["jewelcrafting"].."|r".." Multi",
+	tooltip = L["jewelcrafting"],
+	icon = "Interface\\Icons\\Inv_misc_gem_02.blp",
 	category = "Profession",
 	version = version,
 	onUpdate = OnUpdate,

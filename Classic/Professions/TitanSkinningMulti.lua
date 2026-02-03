@@ -61,6 +61,16 @@ local function OnUpdate(self, id)
 	return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local SKIMtext
 	local bonusText = ""
@@ -81,14 +91,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(SKIM - startskill).."]"
 	end
 
-	if SKIM == 450 then
-		SKIMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif SKIMmax == 0 then
-		SKIMtext = "|cFFFF2e2e"..L["noprof"]
+	if SKIMmax == 0 then
+		SKIMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif SKIM == SKIMmax then
-		SKIMtext = "|cFFFFFFFF"..SKIM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if SKIMmax == maxCap then
+			SKIMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			SKIMtext = "|cFFFFFFFF" .. SKIM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		SKIMtext = "|cFFFFFFFF"..SKIM..HideText..SimpleText..BarBalanceText
+		SKIMtext = "|cFFFFFFFF" .. SKIM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["skinning"]..": ", SKIMtext
@@ -109,7 +122,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not SKIM then
 		ColorValueAccount = ""
-	elseif SKIM == 450 then
+	elseif SKIM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (SKIM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -117,20 +130,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(SKIM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if SKIMmax == 450 then
-		warning = ""
-	elseif SKIM == SKIMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if SKIM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

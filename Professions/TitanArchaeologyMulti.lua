@@ -47,6 +47,20 @@ local function OnUpdate(self, id)
 	end
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_MISTS_OF_PANDARIA then
+		return 600
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_WARLORDS_OF_DRAENOR then
+		return 700
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_LEGION then
+		return 800
+	elseif LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
+		return 950  -- BfA, Shadowlands, Dragonflight, The War Within etc.
+	else
+		return 600  -- fallback to Mists
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local ARCMtext
 	local bonusText = ""
@@ -67,14 +81,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(ARCM - startskill).."]"
 	end
 
-	if ARCM == 950 then
-		ARCMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif ARCMmax == 0 then
-		ARCMtext = "|cFFFF2e2e"..L["noprof"]
+	if ARCMmax == 0 then
+		ARCMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif ARCM == ARCMmax then
-		ARCMtext = "|cFFFFFFFF"..ARCM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if ARCMmax == maxCap then
+			ARCMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			ARCMtext = "|cFFFFFFFF" .. ARCM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		ARCMtext = "|cFFFFFFFF"..ARCM..HideText..SimpleText..BarBalanceText
+		ARCMtext = "|cFFFFFFFF" .. ARCM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["archaeology"]..": ", ARCMtext
@@ -94,7 +111,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not ARCM then
 		ColorValueAccount = ""
-	elseif ARCM == 950 then
+	elseif ARCM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (ARCM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")

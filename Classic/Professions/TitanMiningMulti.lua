@@ -61,6 +61,16 @@ local function OnUpdate(self, id)
 	return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local MINMtext
 	local bonusText = ""
@@ -81,14 +91,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(MINM - startskill).."]"
 	end
 
-	if MINM == 450 then
-		MINMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif MINMmax == 0 then
-		MINMtext = "|cFFFF2e2e"..L["noprof"]
+	if MINMmax == 0 then
+		MINMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif MINM == MINMmax then
-		MINMtext = "|cFFFFFFFF"..MINM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if MINMmax == maxCap then
+			MINMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			MINMtext = "|cFFFFFFFF" .. MINM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		MINMtext = "|cFFFFFFFF"..MINM..HideText..SimpleText..BarBalanceText
+		MINMtext = "|cFFFFFFFF" .. MINM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["mining"]..": ", MINMtext
@@ -109,7 +122,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not MINM then
 		ColorValueAccount = ""
-	elseif MINM == 450 then
+	elseif MINM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (MINM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -117,20 +130,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(MINM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if MINMmax == 450 then
-		warning = ""
-	elseif MINM == MINMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if MINM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

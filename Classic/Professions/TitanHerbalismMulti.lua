@@ -53,6 +53,16 @@ local function OnUpdate(self, id)
 	return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local HERMtext
 	local bonusText = ""
@@ -73,14 +83,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(HERM - startskill).."]"
 	end
 
-	if HERM == 450 then
-		HERMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif HERMmax == 0 then
-		HERMtext = "|cFFFF2e2e"..L["noprof"]
+	if HERMmax == 0 then
+		HERMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif HERM == HERMmax then
-		HERMtext = "|cFFFFFFFF"..HERM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if HERMmax == maxCap then
+			HERMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			HERMtext = "|cFFFFFFFF" .. HERM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		HERMtext = "|cFFFFFFFF"..HERM..HideText..SimpleText..BarBalanceText
+		HERMtext = "|cFFFFFFFF" .. HERM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["herbalism"]..": ", HERMtext
@@ -101,7 +114,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not HERM then
 		ColorValueAccount = ""
-	elseif HERM == 450 then
+	elseif HERM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (HERM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -109,20 +122,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(HERM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if HERMmax == 450 then
-		warning = ""
-	elseif HERM == HERMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if HERM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

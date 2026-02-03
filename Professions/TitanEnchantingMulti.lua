@@ -66,6 +66,26 @@ local function OnUpdate(self, id)
     return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+    if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_MISTS_OF_PANDARIA then
+        return 600
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_WARLORDS_OF_DRAENOR then
+        return 700
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_LEGION then
+        return 800
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BATTLE_FOR_AZEROTH then
+        return 150
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_SHADOWLANDS then
+        return 100
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_DRAGONFLIGHT then
+        return 100
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_THE_WAR_WITHIN then
+        return 100
+    else
+        return 600  -- fallback to Mists of Pandaria
+    end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
     local ENCMtext
     local bonusText = ""
@@ -87,14 +107,15 @@ local function GetButtonText(self, id)
         BarBalanceText = " |cFF69FF69[" .. (ENCM - startskill) .. "]"
     end
 
-    if ENCM == 600 then -- Valor máximo do MoP (clássico)
-        ENCMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
-	--[[elseif level > 49 and ENCM == 175 then
-		ENCMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
-    elseif ENCMmax == 0 then -- Sem profissão
+    if ENCMmax == 0 then
         ENCMtext = "|cFFFF2e2e" .. L["noprof"]
-    elseif ENCM == ENCMmax --[[and level < 50--]] then
-        ENCMtext = "|cFFFFFFFF" .. ENCM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+    elseif ENCM == ENCMmax then
+        local maxCap = GetMaxProfessionCap()
+        if ENCMmax == maxCap then
+            ENCMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+        else
+            ENCMtext = "|cFFFFFFFF" .. ENCM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+        end
     else
         ENCMtext = "|cFFFFFFFF" .. ENCM .. HideText .. SimpleText .. BarBalanceText
     end
@@ -123,7 +144,7 @@ local function GetTooltipText(self, id)
     local ColorValueAccount -- Conta de ganho de perícia
     if not ENCM then
         ColorValueAccount = ""
-    elseif ENCM == 600 then
+    elseif ENCM == GetMaxProfessionCap() then
         ColorValueAccount = "\n" .. L["maxskill"]
     elseif not startskill or (ENCM - startskill) == 0 then
         ColorValueAccount = "\n" .. L["session"] .. "\t" .. TitanUtils_GetHighlightText("0")

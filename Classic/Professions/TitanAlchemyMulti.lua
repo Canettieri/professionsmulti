@@ -61,6 +61,16 @@ local function OnUpdate(self, id)
 	return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local ALCMtext
 	local bonusText = ""
@@ -81,15 +91,19 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(ALCM - startskill).."]"
 	end
 
-	if ALCM == 450 then
-		ALCMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif ALCMmax == 0 then
-		ALCMtext = "|cFFFF2e2e"..L["noprof"]
+	if ALCMmax == 0 then
+		ALCMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif ALCM == ALCMmax then
-		ALCMtext = "|cFFFFFFFF"..ALCM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if ALCMmax == maxCap then
+			ALCMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			ALCMtext = "|cFFFFFFFF" .. ALCM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		ALCMtext = "|cFFFFFFFF"..ALCM..HideText..SimpleText..BarBalanceText
+		ALCMtext = "|cFFFFFFFF" .. ALCM .. HideText .. SimpleText .. BarBalanceText
 	end
+	
 	return L["alchemy"]..": ", ALCMtext
 end
 -----------------------------------------------
@@ -108,7 +122,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not ALCM then
 		ColorValueAccount = ""
-	elseif ALCM == 450 then
+	elseif ALCM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (ALCM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -116,20 +130,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(ALCM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if ALCMmax == 450 then
-		warning = ""
-	elseif ALCM == ALCMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if ALCM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

@@ -42,6 +42,26 @@ local function OnUpdate(self, id)
 	end
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_MISTS_OF_PANDARIA then
+		return 600
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_WARLORDS_OF_DRAENOR then
+		return 700
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_LEGION then
+		return 800
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BATTLE_FOR_AZEROTH then
+		return 150
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_SHADOWLANDS then
+		return 200
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_DRAGONFLIGHT then
+		return 100
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_THE_WAR_WITHIN then
+		return 300
+	else
+		return 600  -- fallback to Mists
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local FISMtext
 	local bonusText = ""
@@ -62,64 +82,65 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(FISM - startskill).."]"
 	end
 
-	if FISM == 600 then -- Valor máximo do MoP (clássico)
-		FISMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-		--[[elseif level > 49 and FISM == 175 then
-            FISMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
-        elseif FISMmax == 0 then -- Sem profissão
-            FISMtext = "|cFFFF2e2e"..L["noprof"]
-        elseif FISM == FISMmax --[[and level < 50--]] then
-            FISMtext = "|cFFFFFFFF"..FISM.."|cFF69FF69! ["..L["maximum"].."]"..SimpleText..BarBalanceText
-        else
-            FISMtext = "|cFFFFFFFF"..FISM..HideText..SimpleText..BarBalanceText
-        end
+	if FISMmax == 0 then
+		FISMtext = "|cFFFF2e2e" .. L["noprof"]
+	elseif FISM == FISMmax then
+		local maxCap = GetMaxProfessionCap()
+		if FISMmax == maxCap then
+			FISMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			FISMtext = "|cFFFFFFFF" .. FISM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
+	else
+		FISMtext = "|cFFFFFFFF" .. FISM .. HideText .. SimpleText .. BarBalanceText
+	end
 
-        return L["fishing"]..": ", FISMtext
+	return L["fishing"]..": ", FISMtext
+end
+-----------------------------------------------
+local function GetTooltipText(self, id)
+	local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..FISM -- Valor atual da prof.
+	if FISMIncrease > 0 then
+		totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..FISM+FISMIncrease
+	end
+	local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
+	if FISMIncrease > 0 then
+		bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..FISMIncrease
+	end
+	local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(FISMmax) -- O máxim oque vocêr pode ter no nível atual de perícia
+
+	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["cooking"] -- Texto de combinação
+
+	local CombinationText = Goodwith -- Tecto das combinações
+	if TitanGetVar(ID, "HideCombination") then
+		CombinationText = ""
+	end
+
+	local ColorValueAccount -- Conta de ganho de perícia
+	if not FISM then
+		ColorValueAccount = ""
+	elseif FISM == GetMaxProfessionCap() then
+		ColorValueAccount = "\n"..L["maxskill"]
+	elseif not startskill  or (FISM - startskill) == 0 then
+		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
+	elseif (FISM - startskill) > 0 then
+		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(FISM - startskill).."|r"
+	elseif (FISM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+		ColorValueAccount = ""
+	end
+
+	--[[
+    local warning -- Aviso de que não está mais aprendendo
+    if FISMmax == 800 then
+        warning = ""
+    elseif FISM == FISMmax and level < 50 and FISM ~= 175 then
+        warning = L["warning"]
+    elseif FISM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
+        warning = ""
+    else
+        warning = ""
     end
-    -----------------------------------------------
-    local function GetTooltipText(self, id)
-        local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..FISM -- Valor atual da prof.
-        if FISMIncrease > 0 then
-            totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..FISM+FISMIncrease
-        end
-        local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
-        if FISMIncrease > 0 then
-            bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..FISMIncrease
-        end
-        local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(FISMmax) -- O máxim oque vocêr pode ter no nível atual de perícia
-
-        local Goodwith = "\n \n"..L["goodwith"].."\n"..L["cooking"] -- Texto de combinação
-
-        local CombinationText = Goodwith -- Tecto das combinações
-        if TitanGetVar(ID, "HideCombination") then
-            CombinationText = ""
-        end
-
-        local ColorValueAccount -- Conta de ganho de perícia
-        if not FISM then
-            ColorValueAccount = ""
-        elseif FISM == 600 then
-            ColorValueAccount = "\n"..L["maxskill"]
-        elseif not startskill  or (FISM - startskill) == 0 then
-            ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
-        elseif (FISM - startskill) > 0 then
-            ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(FISM - startskill).."|r"
-        elseif (FISM - startskill) < 0 then -- Segurança quando existe mudança de exp.
-            ColorValueAccount = ""
-        end
-
-        --[[
-        local warning -- Aviso de que não está mais aprendendo
-        if FISMmax == 800 then
-            warning = ""
-        elseif FISM == FISMmax and level < 50 and FISM ~= 175 then
-            warning = L["warning"]
-        elseif FISM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
-            warning = ""
-        else
-            warning = ""
-        end
-        --]]
+    --]]
 
 	local ValueText = "" -- Difere com e sem profissão
 	if FISM == 0 then

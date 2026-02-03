@@ -61,6 +61,16 @@ local function OnUpdate(self, id)
 	return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local TAIMtext
 	local bonusText = ""
@@ -81,14 +91,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(TAIM - startskill).."]"
 	end
 
-	if TAIM == 450 then
-		TAIMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif TAIMmax == 0 then
-		TAIMtext = "|cFFFF2e2e"..L["noprof"]
+	if TAIMmax == 0 then
+		TAIMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif TAIM == TAIMmax then
-		TAIMtext = "|cFFFFFFFF"..TAIM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if TAIMmax == maxCap then
+			TAIMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			TAIMtext = "|cFFFFFFFF" .. TAIM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		TAIMtext = "|cFFFFFFFF"..TAIM..HideText..SimpleText..BarBalanceText
+		TAIMtext = "|cFFFFFFFF" .. TAIM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["tailoring"]..": ", TAIMtext
@@ -109,7 +122,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not TAIM then
 		ColorValueAccount = ""
-	elseif TAIM == 450 then
+	elseif TAIM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (TAIM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -117,20 +130,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(TAIM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if TAIMmax == 450 then
-		warning = ""
-	elseif TAIM == TAIMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if TAIM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

@@ -62,6 +62,26 @@ local function OnUpdate(self, id)
 	return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_MISTS_OF_PANDARIA then
+		return 600
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_WARLORDS_OF_DRAENOR then
+		return 700
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_LEGION then
+		return 800
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BATTLE_FOR_AZEROTH then
+		return 150
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_SHADOWLANDS then
+		return 100
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_DRAGONFLIGHT then
+		return 100
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_THE_WAR_WITHIN then
+		return 100
+	else
+		return 600  -- fallback to Mists of Pandaria
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local TAIMtext
 	local bonusText = ""
@@ -82,64 +102,65 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(TAIM - startskill).."]"
 	end
 
-	if TAIM == 600 then -- Valor máximo do MoP (clássico)
-		TAIMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-		--[[elseif level > 49 and TAIM == 175 then
-            TAIMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
-        elseif TAIMmax == 0 then -- Sem profissão
-            TAIMtext = "|cFFFF2e2e"..L["noprof"]
-        elseif TAIM == TAIMmax --[[and level < 50--]] then
-            TAIMtext = "|cFFFFFFFF"..TAIM.."|cFF69FF69! ["..L["maximum"].."]"..SimpleText..BarBalanceText
-        else
-            TAIMtext = "|cFFFFFFFF"..TAIM..HideText..SimpleText..BarBalanceText
-        end
+	if TAIMmax == 0 then
+		TAIMtext = "|cFFFF2e2e" .. L["noprof"]
+	elseif TAIM == TAIMmax then
+		local maxCap = GetMaxProfessionCap()
+		if TAIMmax == maxCap then
+			TAIMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			TAIMtext = "|cFFFFFFFF" .. TAIM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
+	else
+		TAIMtext = "|cFFFFFFFF" .. TAIM .. HideText .. SimpleText .. BarBalanceText
+	end
 
-        return L["tailoring"]..": ", TAIMtext
+	return L["tailoring"]..": ", TAIMtext
+end
+-----------------------------------------------
+local function GetTooltipText(self, id)
+	local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..TAIM -- Valor atual da prof.
+	if TAIMIncrease > 0 then
+		totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..TAIM+TAIMIncrease
+	end
+	local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
+	if TAIMIncrease > 0 then
+		bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..TAIMIncrease
+	end
+	local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(TAIMmax) -- O máximo que você pode ter no nível atual de perícia
+
+	local Goodwith = "\n \n"..L["goodwith"].."\n"..L["enchanting"] -- Texto de combinação
+
+	local CombinationText = Goodwith -- Tecto das combinações
+	if TitanGetVar(ID, "HideCombination") then
+		CombinationText = ""
+	end
+
+	local ColorValueAccount -- Conta de ganho de perícia
+	if not TAIM then
+		ColorValueAccount = ""
+	elseif TAIM == GetMaxProfessionCap() then
+		ColorValueAccount = "\n"..L["maxskill"]
+	elseif not startskill  or (TAIM - startskill) == 0 then
+		ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
+	elseif (TAIM - startskill) > 0 then
+		ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(TAIM - startskill).."|r"
+	elseif (TAIM - startskill) < 0 then -- Segurança quando existe mudança de exp.
+		ColorValueAccount = ""
+	end
+
+	--[[
+    local warning -- Aviso de que não está mais aprendendo
+    if TAIMmax == 800 then
+        warning = ""
+    elseif TAIM == TAIMmax and level < 50 and TAIM ~= 175 then
+        warning = L["warning"]
+    elseif TAIM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
+        warning = ""
+    else
+        warning = ""
     end
-    -----------------------------------------------
-    local function GetTooltipText(self, id)
-        local totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFFFFFFFF"..TAIM -- Valor atual da prof.
-        if TAIMIncrease > 0 then
-            totalTooltip = "\n"..L["craftsmanship"].."|r\t|cFF69FF69"..TAIM+TAIMIncrease
-        end
-        local bonusText = "" -- Texto bónus só aparece se você tiver bônus para mostrar!
-        if TAIMIncrease > 0 then
-            bonusText = "\n"..L["bonustext"].."\t|cFF69FF69"..TAIMIncrease
-        end
-        local maxSkill = "\n"..L["maxtext"].."\t"..TitanUtils_GetHighlightText(TAIMmax) -- O máximo que você pode ter no nível atual de perícia
-
-        local Goodwith = "\n \n"..L["goodwith"].."\n"..L["enchanting"] -- Texto de combinação
-
-        local CombinationText = Goodwith -- Tecto das combinações
-        if TitanGetVar(ID, "HideCombination") then
-            CombinationText = ""
-        end
-
-        local ColorValueAccount -- Conta de ganho de perícia
-        if not TAIM then
-            ColorValueAccount = ""
-        elseif TAIM == 600 then
-            ColorValueAccount = "\n"..L["maxskill"]
-        elseif not startskill  or (TAIM - startskill) == 0 then
-            ColorValueAccount = "\n"..L["session"].."\t"..TitanUtils_GetHighlightText("0")
-        elseif (TAIM - startskill) > 0 then
-            ColorValueAccount = "\n"..L["session"].."\t".."|cFF69FF69"..(TAIM - startskill).."|r"
-        elseif (TAIM - startskill) < 0 then -- Segurança quando existe mudança de exp.
-            ColorValueAccount = ""
-        end
-
-        --[[
-        local warning -- Aviso de que não está mais aprendendo
-        if TAIMmax == 800 then
-            warning = ""
-        elseif TAIM == TAIMmax and level < 50 and TAIM ~= 175 then
-            warning = L["warning"]
-        elseif TAIM == 175 and level > 49 then -- Não deixa abvisar no BfA se estiver com 175
-            warning = ""
-        else
-            warning = ""
-        end
-        --]]
+    --]]
 
 	local ValueText = "" -- Difere com e sem profissão
 	if TAIM == 0 then

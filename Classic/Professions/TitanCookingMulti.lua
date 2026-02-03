@@ -50,6 +50,16 @@ local function OnUpdate(self, id)
 	end
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local COOMtext
 	local bonusText = ""
@@ -70,14 +80,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(COOM - startskill).."]"
 	end
 
-	if COOM == 450 then
-		COOMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif COOMmax == 0 then
-		COOMtext = "|cFFFF2e2e"..L["noprof"]
+	if COOMmax == 0 then
+		COOMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif COOM == COOMmax then
-		COOMtext = "|cFFFFFFFF"..COOM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if COOMmax == maxCap then
+			COOMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			COOMtext = "|cFFFFFFFF" .. COOM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		COOMtext = "|cFFFFFFFF"..COOM..HideText..SimpleText..BarBalanceText
+		COOMtext = "|cFFFFFFFF" .. COOM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["cooking"]..": ", COOMtext
@@ -98,7 +111,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if COOMmax == 0 then
 		ColorValueAccount = ""
-	elseif COOM == 450 then
+	elseif COOM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (COOM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -106,20 +119,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(COOM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if COOMmax == 450 then
-		warning = ""
-	elseif COOM == COOMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if COOM == 0 then
 		ValueText = L["nosecskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

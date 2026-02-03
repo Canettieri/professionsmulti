@@ -66,6 +66,26 @@ local function OnUpdate(self, id)
     return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+    if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_MISTS_OF_PANDARIA then
+        return 600
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_WARLORDS_OF_DRAENOR then
+        return 700
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_LEGION then
+        return 800
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BATTLE_FOR_AZEROTH then
+        return 150
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_SHADOWLANDS then
+        return 100
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_DRAGONFLIGHT then
+        return 100
+    elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_THE_WAR_WITHIN then
+        return 100
+    else
+        return 600  -- fallback to Mists of Pandaria
+    end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
     local ALCMtext
     local bonusText = ""
@@ -87,17 +107,19 @@ local function GetButtonText(self, id)
         BarBalanceText = " |cFF69FF69[" .. (ALCM - startskill) .. "]"
     end
 
-    if ALCM == 600 then -- Valor máximo do MoP (clássico)
-        ALCMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
-    --[[elseif level > 84 and ALCM == 600 then
-        ALCMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText --]] -- Eu usava essa linha para o clássico, mas não faz mais sentido
-    elseif ALCMmax == 0 then -- Sem profissão
+    if ALCMmax == 0 then
         ALCMtext = "|cFFFF2e2e" .. L["noprof"]
-    elseif ALCM == ALCMmax --[[and level < 50--]] then
-        ALCMtext = "|cFFFFFFFF" .. ALCM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+    elseif ALCM == ALCMmax then
+        local maxCap = GetMaxProfessionCap()
+        if ALCMmax == maxCap then
+            ALCMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+        else
+            ALCMtext = "|cFFFFFFFF" .. ALCM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+        end
     else
         ALCMtext = "|cFFFFFFFF" .. ALCM .. HideText .. SimpleText .. BarBalanceText
     end
+
     return L["alchemy"] .. ": ", ALCMtext
 end
 -----------------------------------------------
@@ -122,7 +144,7 @@ local function GetTooltipText(self, id)
     local ColorValueAccount -- Conta de ganho de perícia
     if not ALCM then
         ColorValueAccount = ""
-    elseif ALCM == 600 then
+    elseif ALCM == GetMaxProfessionCap() then
         ColorValueAccount = "\n" .. L["maxskill"]
     elseif not startskill or (ALCM - startskill) == 0 then
         ColorValueAccount = "\n" .. L["session"] .. "\t" .. TitanUtils_GetHighlightText("0")

@@ -38,6 +38,16 @@ local function OnUpdate(self, id)
 	end
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local FISMtext
 	local bonusText = ""
@@ -58,14 +68,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(FISM - startskill).."]"
 	end
 
-	if FISM == 450 then
-		FISMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif FISMmax == 0 then
-		FISMtext = "|cFFFF2e2e"..L["noprof"]
+	if FISMmax == 0 then
+		FISMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif FISM == FISMmax then
-		FISMtext = "|cFFFFFFFF"..FISM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if FISMmax == maxCap then
+			FISMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			FISMtext = "|cFFFFFFFF" .. FISM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		FISMtext = "|cFFFFFFFF"..FISM..HideText..SimpleText..BarBalanceText
+		FISMtext = "|cFFFFFFFF" .. FISM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["fishing"]..": ", FISMtext
@@ -86,7 +99,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if FISMmax == 0 then
 		ColorValueAccount = ""
-	elseif FISM == 450 then
+	elseif FISM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (FISM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -94,20 +107,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(FISM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if FISMmax == 450 then
-		warning = ""
-	elseif FISM == FISMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if FISM == 0 then
 		ValueText = L["nosecskill"]..Goodwith
 	else
-		ValueText = L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

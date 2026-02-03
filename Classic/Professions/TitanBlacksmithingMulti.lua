@@ -61,6 +61,16 @@ local function OnUpdate(self, id)
 	return true
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300   -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375   -- TBC
+	else
+		return 450
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local BLAMtext
 	local bonusText = ""
@@ -81,14 +91,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(BLAM - startskill).."]"
 	end
 
-	if BLAM == 450 then
-		BLAMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif BLAMmax == 0 then
-		BLAMtext = "|cFFFF2e2e"..L["noprof"]
+	if BLAMmax == 0 then
+		BLAMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif BLAM == BLAMmax then
-		BLAMtext = "|cFFFFFFFF"..BLAM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if BLAMmax == maxCap then
+			BLAMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			BLAMtext = "|cFFFFFFFF" .. BLAM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		BLAMtext = "|cFFFFFFFF"..BLAM..HideText..SimpleText..BarBalanceText
+		BLAMtext = "|cFFFFFFFF" .. BLAM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["blacksmithing"]..": ", BLAMtext
@@ -109,7 +122,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if not BLAM then
 		ColorValueAccount = ""
-	elseif BLAM == 450 then
+	elseif BLAM == BLAMmax then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (BLAM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -117,20 +130,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(BLAM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if BLAMmax == 450 then
-		warning = ""
-	elseif BLAM == BLAMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if BLAM == 0 then
 		ValueText = L["noskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText

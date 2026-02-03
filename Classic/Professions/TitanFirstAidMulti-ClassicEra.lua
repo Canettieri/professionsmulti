@@ -50,6 +50,20 @@ local function OnUpdate(self, id)
 	end
 end
 -----------------------------------------------
+local function GetMaxProfessionCap()
+	if LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC then
+		return 300  -- Classic/Vanilla
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE then
+		return 375  -- TBC
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_WRATH_OF_THE_LICH_KING then
+		return 450  -- WotLK
+	elseif LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CATACLYSM then
+		return 525  -- Cataclysm
+	else
+		return 300
+	end
+end
+-----------------------------------------------
 local function GetButtonText(self, id)
 	local FIRMtext
 	local bonusText = ""
@@ -70,14 +84,17 @@ local function GetButtonText(self, id)
 		BarBalanceText = " |cFF69FF69["..(FIRM - startskill).."]"
 	end
 
-	if FIRM == 450 then
-		FIRMtext = "|cFF69FF69"..L["maximum"].."!"..SimpleText
-	elseif FIRMmax == 0 then
-		FIRMtext = "|cFFFF2e2e"..L["noprof"]
+	if FIRMmax == 0 then
+		FIRMtext = "|cFFFF2e2e" .. L["noprof"]
 	elseif FIRM == FIRMmax then
-		FIRMtext = "|cFFFFFFFF"..FIRM.."|cFFFF2e2e! ["..L["maximum"].."]"..SimpleText..BarBalanceText
+		local maxCap = GetMaxProfessionCap()
+		if FIRMmax == maxCap then
+			FIRMtext = "|cFF69FF69" .. L["maximum"] .. "!" .. SimpleText
+		else
+			FIRMtext = "|cFFFFFFFF" .. FIRM .. "|cFF69FF69! [" .. L["maximum"] .. "]" .. SimpleText .. BarBalanceText
+		end
 	else
-		FIRMtext = "|cFFFFFFFF"..FIRM..HideText..SimpleText..BarBalanceText
+		FIRMtext = "|cFFFFFFFF" .. FIRM .. HideText .. SimpleText .. BarBalanceText
 	end
 
 	return L["firstAid"]..": ", FIRMtext
@@ -98,7 +115,7 @@ local function GetTooltipText(self, id)
 	local ColorValueAccount -- Conta de ganho de perícia
 	if FIRMmax == 0 then
 		ColorValueAccount = ""
-	elseif FIRM == 450 then
+	elseif FIRM == GetMaxProfessionCap() then
 		ColorValueAccount = "\n"..L["maxskill"]
 	elseif not startskill  or (FIRM - startskill) == 0 then
 		ColorValueAccount = "\n"..L["session"]..TitanUtils_GetHighlightText("0")
@@ -106,20 +123,11 @@ local function GetTooltipText(self, id)
 		ColorValueAccount = "\n"..L["session"].."|cFF69FF69"..(FIRM - startskill).."|r"
 	end
 
-	local warning -- Aviso de que não está mais aprendendo
-	if FIRMmax == 450 then
-		warning = ""
-	elseif FIRM == FIRMmax then
-		warning = L["warning"]
-	else
-		warning = ""
-	end
-
 	local ValueText = "" -- Difere com e sem profissão
 	if FIRM == 0 then
 		ValueText = L["nosecskill"]..Goodwith
 	else
-		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText..warning
+		ValueText = L["hint"].."\n \n"..L["info"]..BonusTooltip..maxtext..ColorValueAccount..CombinationText
 	end
 
 	return ValueText
