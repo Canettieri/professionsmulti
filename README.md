@@ -16,7 +16,7 @@
 
 <h3><strong>FAQ:</strong></h3>
 
-<h2>1. The War Within integration</h2>
+<h2>1. Retail integration</h2>
 <p>It’s working perfectly. Please report any errors or bugs here.</p>
 
 <h2>2. Classic and Classic Era integration</h2>
