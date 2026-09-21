@@ -64,15 +64,13 @@ function L.PrepareProfessionsMenu(self, id)
 	info.checked = TitanGetVar(id, "DisplayOnRightSide");
 	L_UIDropDownMenu_AddButton(info);
 
-	TitanPanelRightClickMenu_AddSpacer();
+	L_UIDropDownMenu_AddSeparator();
 
 	L_UIDropDownMenu_AddButton({
 		notCheckable = true,
 		text = ACE["TITAN_PANEL_MENU_HIDE"],
 		func = function() TitanPanelRightClickMenu_Hide(id) end
 	})
-
-	L_UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;

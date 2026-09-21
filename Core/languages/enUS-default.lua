@@ -48,155 +48,6 @@ L["inprog"] = "\rIn progress:"
 L["nofragments"] = "No fragments"
 L["noarchaeology"] = "|cFFFF2e2eYou didn't learn archaeology yet\ror don't have fragments.|r\r\rGo to the closest trainer to learn it\ror visit an excavation field."
 
---- Cooking (Shadowlands)
-L["aetherealMeat"] = "|cFFFFFFFFAethereal Meat|r"
-L["cCrawlerMeat"] = "|cFFFFFFFFCreeping Crawler Meat|r"
-L["phantasmalHaunch"] = "|cFFFFFFFFPhantasmal Haunch|r"
-L["rSeraphicWing"] = "|cFFFFFFFFRaw Seraphic Wing|r"
-L["sinhadowyShank"] = "|cFFFFFFFFShadowy Shank|r"
-L["tenebrousRibs"] = "|cFFFFFFFFTenebrous Ribs|r"
-
---- Enchanting (Legion)
-L["arkhana"] = "|cFFFFFFFFArkhana|r"
-L["leylight"] = "|cff0070ddLeylight Shard|r"
-L["chaosCrystal"] = "|cffa335eeChaos Crystal|r"
---- Enchanting (BfA)
-L["gdust"] = "|cFFFFFFFFGloom Dust|r"
-L["umbrashard"] = "|cff0070ddUmbra Shard|r"
-L["veiledcrystal"] = "|cffa335eeVeiled Crystal|r"
---- Enchanting (Shadowlands)
-L["soulDust"] = "|cFFFFFFFFSoul Dust|r"
-L["sacredShard"] = "|cff0070ddSacred Shard|r"
-L["eternalCrystal"] = "|cffa335eeEternal Crystal|r"
-
---- Fishing (Legion)
-L["mackerel"] = "|cFFFFFFFFSilver Mackerel|r"
-L["queenfish"] = "|cFFFFFFFFCursed Queenfish|r"
-L["salmon"] = "|cFFFFFFFFHighmountain Salmon|r"
-L["mossgill"] = "|cFFFFFFFFMossgill Perch|r"
-L["stormray"] = "|cFFFFFFFFStormray|r"
-L["koi"] = "|cFFFFFFFFRunescale Koi|r"
-L["barracuda"] = "|cFFFFFFFFBlack Barracuda|r"
---- Fishing (BfA)
-L["gscatfish"] = "|cFFFFFFFFGreat Sea Catfish|r"
-L["redtaill"] = "|cFFFFFFFFRedtail Loach|r"
-L["smackerel"] = "|cFFFFFFFFSlimy Mackerel|r"
-L["sshifter"] = "|cFFFFFFFFSand Shifter|r"
-L["tperch"] = "|cFFFFFFFFTiragarde Perch|r"
-L["lsnapper"] = "|cFFFFFFFFLane Snapper|r"
-L["ffangtooth"] = "|cFFFFFFFFFrenzied Fangtooth|r"
-L["msalmon"] = "|cff1eff00Midnight Salmon|r"
---- Fishing (Shadowlands)
-L["lostSole"] = "|cFFFFFFFFLost Sole|r"
-L["silvergillPike"] = "|cFFFFFFFFSilvergill Pike|r"
-L["pockedBonefish"] = "|cFFFFFFFFPocked Bonefish|r"
-L["iridescentAmberjack"] = "|cFFFFFFFFIridescent Amberjack|r"
-L["spinefinPiranha"] = "|cFFFFFFFFSpinefin Piranha|r"
-L["elysianThade"] = "|cff1eff00Elysian Thade|r"
-
---- Herbalism (Legion)
-L["yseralline"] = "|cFFFFFFFFYseralline Seed|r"
-L["felwort"] = "|cff1eff00Felwort|r"
-L["starlight"] = "|cFFFFFFFFStarlight Rose|r"
-L["fjarn"] = "|cFFFFFFFFFjarnskaggl|r"
-L["foxflower"] = "|cFFFFFFFFFoxflower|r"
-L["dreamleaf"] = "|cFFFFFFFFDreamleaf|r"
-L["aethril"] = "|cFFFFFFFFAethril|r"
---- Herbalism (BfA)
-L["zinanthid"] = "|cFFFFFFFFZin'anthid|r"
-L["riverbud"] = "|cFFFFFFFFRiverbud|r"
-L["seastalk"] = "|cFFFFFFFFSea Stalk|r"
-L["starmoss"] = "|cFFFFFFFFStar Moss|r"
-L["akunda"] = "|cFFFFFFFFAkunda's Bite|r"
-L["wkiss"] = "|cFFFFFFFFWinter's Kiss|r"
-L["spollen"] = "|cFFFFFFFFSiren's Pollen|r"
-L["aweed"] = "|cff1eff00Anchor Weed|r"
---- Herbalism (Shadowlands)
-L["risingGlory"] = "|cFFFFFFFFRising Glory|r"
-L["marrowroot"] = "|cFFFFFFFFMarrowroot|r"
-L["vigilsTorch"] = "|cFFFFFFFFVigil's Torch|r"
-L["widowbloom"] = "|cFFFFFFFFWidowbloom|r"
-L["deathBlossom"] = "|cFFFFFFFFDeath Blossom|r"
-L["nightshade"] = "|cff1eff00Nightshade|r"
-
---- Inscription (Shadowlands)
-L["luminousInk"] = "|cFFFFFFFFLuminous Ink|r"
-L["umbralInk"] = "|cFFFFFFFFUmbral Ink|r"
-L["tranquilInk"] = "|cff1eff00Tranquil Ink|r"
-L["luminousPigment"] = "|cFFFFFFFFLuminous Pigment|r"
-L["umbralPigment"] = "|cFFFFFFFFUmbral Pigment|r"
-L["tranquilPigment"] = "|cff1eff00Tranquil Pigment|r"
-L["ardenwood"] = "|cFFFFFFFFArdenwood|r"
-L["darkParchment"] = "|cFFFFFFFFDark Parchment|r"
-
---- Jewelcrafting (Shadowlands)
-L["angerseye"] = "|cff1eff00Angerseye|r"
-L["oriblase"] = "|cff1eff00Oriblase|r"
-L["umbryl"] = "|cff1eff00Umbryl|r"
-
---- Mining (Legion)
-L["leystone"] = "|cFFFFFFFFLeystone Ore|r"
-L["felslate"] = "|cFFFFFFFFFelslate|r"
-L["brimstone"] = "|cff1eff00Infernal Brimstone|r"
-L["blood"] = "|cff0070ddBlood of Sargeras|r"
---- Mining (BfA)
-L["monelite"] = "|cFFFFFFFFMonelite Ore|r"
-L["stormSilver"] = "|cFFFFFFFFStorm Silver Ore|r"
-L["platinumOre"] = "|cff1eff00Platinum Ore|r"
-L["osmeniteOre"] = "|cFFFFFFFFOsmenite Ore|r"
---- Mining (Shadowlands)
-L["laestriteOre"] = "|cFFFFFFFFLaestrite Ore|r"
-L["elethiumOre"] = "|cff0070ddElethium Ore|r"
-L["soleniumOre"] = "|cff1eff00Solenium Ore|r"
-L["oxxeinOre"] = "|cff1eff00Oxxein Ore|r"
-L["phaedrumOre"] = "|cff1eff00Phaedrum Ore|r"
-L["sinvyrOre"] = "|cff1eff00Sinvyr Ore|r"
-L["porousStone"] = "|cFFFFFFFFPorous Stone|r"
-L["shadedStone"] = "|cFFFFFFFFShaded Stone|r"
-L["twilightBark"] = "|cFFFFFFFFTwilight Bark|r"
-
---- Skinning (Legion)
-L["stormscale"] = "|cFFFFFFFFStormscale|r"
-L["stonehide"] = "|cFFFFFFFFStonehide Leather|r"
-L["felhide"] = "|cff1eff00Felhide|r"
-L["tooth"] = "|cFFFFFFFFUnbroken Tooth|r"
-L["claw"] = "|cFFFFFFFFUnbroken Claw|r"
---- Skinning (BfA)
-L["cbone"] = "|cff1eff00Calcified Bone|r"
-L["bloodstained"] = "|cFFFFFFFFBlood-Stained Bone|r"
-L["mistscale"] = "|cff1eff00Mistscale|r"
-L["shimmerscale"] = "|cFFFFFFFFShimmerscale|r"
-L["tempesth"] = "|cff1eff00Tempest Hide|r"
-L["coarsel"] = "|cFFFFFFFFCoarse Leather|r"
-L["dredgedl"] = "|cFFFFFFFFDredged Leather|r"
-L["cragscale"] = "|cFFFFFFFFCragscale|r"
---- Skinning (Shadowlands)
-L["desolateLeather"] = "|cFFFFFFFFDesolate Leather|r"
-L["callousHide"] = "|cff1eff00Callous Hide|r"
-L["pallidBone"] = "|cFFFFFFFFPallid Bone|r"
-L["gauntSinew"] = "|cff1eff00Gaunt Sinew|r"
-L["hDesolateLeather"] = "|cff1eff00Heavy Desolate Leather|r"
-L["hCallousHide"] = "|cff0070ddHeavy Callous Hide|r"
-L["purifiedLeather"] = "|cFFFFFFFFPurified Leather|r"
-L["necroticLeather"] = "|cFFFFFFFFNecrotic Leather|r"
-L["unseelieLeather"] = "|cFFFFFFFFUnseelie Leather|r"
-L["sinfulLeather"] = "|cFFFFFFFFSinful Leather|r"
-
---- Tailoring (Legion)
-L["shaldorei"] = "|cFFFFFFFFShal'dorei Silk|r"
-L["silkweave"] = "|cFFFFFFFFImbued Silkweave|r"
---- Tailoring (BfA)
-L["tidespray"] = "|cFFFFFFFFTidespray Linen|r"
-L["nylonthread"] = "|cFFFFFFFFNylon Thread|r"
-L["deepseasatin"] = "|cff1eff00Deep Sea Satin|r"
-L["embroideredsatin"] = "|cff0070ddEmbroidered Deep Sea Satin|r"
-L["gseaweave"] = "|cff1eff00Gilded Seaweave|r"
---- Tailoring (Shadowlands)
-L["shroudedCloth"] = "|cFFFFFFFFShrouded Cloth|r"
-L["lightlessSilk"] = "|cff1eff00Lightless Silk|r"
-L["enLightlessSilk"] = "|cff1eff00Enchanted Lightless Silk|r"
-L["penumbraThread"] = "|cFFFFFFFFPenumbra Thread|r"
-
 ------ Shared with one or more
 --- Shared (default)
 L["hint"] = "|cFFB4EEB4Hint:|r |cFFFFFFFFLeft-click opens your\n|cFFFFFFFFprofession window."
@@ -223,6 +74,12 @@ L["rLegion"] = "Reagents - Legion"
 L["rBfA"] = "Reagents - BfA"
 L["rShadowlands"] = "Reagents - Shadowlands"
 L["rSL"] = "Reagents - SL"
+L["rMidnight"] = "Reagents - Midnight"
+L["rMID"] = "Reagents - Midnight"
+L["rClassic"] = "Reagents - Classic"
+L["rMists"] = "Reagents - Mists of Pandaria"
+L["rTBC"] = "Reagents - The Burning Crusade"
+L["reagentCategory"] = "Profession [Reagents]"
 L["noreagent"] = "You have not got any of\rthese reagents."
 L["hide"] = "Hide"
 L["totalSkill"] = "Total Skill:"

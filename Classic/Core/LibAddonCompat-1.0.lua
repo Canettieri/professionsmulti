@@ -1,7 +1,9 @@
-local MAJOR, MINOR = "LibAddonCompat-1.0", 12
+local MAJOR, MINOR = "LibAddonCompat-1.0", 13
 ---@class LibAddonCompat
 local LibAddonCompat = LibStub:NewLibrary(MAJOR, MINOR)
 if not LibAddonCompat then return end
+
+LibAddonCompat.VERSION = "1.1.0"
 
 local GetNumSkillLines, GetSkillLineInfo = GetNumSkillLines, GetSkillLineInfo
 local FindSpellBookSlotBySpellID, GetSpellBookItemTexture = FindSpellBookSlotBySpellID, GetSpellBookItemTexture
@@ -28,17 +30,38 @@ local TEXTURE_SKINNING = "134366"
 local TEXTURE_JEWELCRAFTING = { "134071", "134072" }
 local TEXTURE_INSCRIPTION = "237171"
 
-local professionsLocale = {
-	[PROFESSIONS_COOKING] = TEXTURE_COOKING,
-	[PROFESSIONS_FIRST_AID] = TEXTURE_FIRST_AID,
-	[PROFESSIONS_FISHING] = TEXTURE_FISHING
-}
+local professionsLocale = {}
+
+if type(PROFESSIONS_COOKING) == "string" then
+	professionsLocale[PROFESSIONS_COOKING] = TEXTURE_COOKING
+end
+if type(PROFESSIONS_FIRST_AID) == "string" then
+	professionsLocale[PROFESSIONS_FIRST_AID] = TEXTURE_FIRST_AID
+end
+if type(PROFESSIONS_FISHING) == "string" then
+	professionsLocale[PROFESSIONS_FISHING] = TEXTURE_FISHING
+end
+
+local professionInfoTable
+local findSpellTexture
+
+local function namesMatch(left, right)
+	if type(left) ~= "string" or type(right) ~= "string" then
+		return false
+	end
+
+	return left == right or string.lower(left) == string.lower(right)
+end
 
 if INSCRIPTION then
 	professionsLocale[INSCRIPTION] = TEXTURE_INSCRIPTION
 end
 
 function LibAddonCompat:GetProfessions()
+	if type(GetNumSkillLines) ~= "function" or type(GetSkillLineInfo) ~= "function" then
+		return nil, nil, nil, nil, nil, nil
+	end
+
 	local professions = {
 		first = nil,
 		second = nil,
@@ -47,27 +70,33 @@ function LibAddonCompat:GetProfessions()
 		fishing = nil
 	}
 
-	for skillIndex = 1, GetNumSkillLines() do
+	local skillLineCount = tonumber(GetNumSkillLines()) or 0
+	for skillIndex = 1, skillLineCount do
 		local skillName, isHeader, isExpanded, skillRank, numTempPoints, skillModifier,
 		skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType,
 		skillDescription = GetSkillLineInfo(skillIndex)
 
 		if skillName and not isHeader then
-			if isAbandonable then
-				-- primary
-				if not professions.first then
-					professions.first = skillIndex
-				else
-					professions.second = skillIndex
-				end
+			if namesMatch(skillName, PROFESSIONS_COOKING) then
+				professions.cooking = skillIndex
+			elseif namesMatch(skillName, PROFESSIONS_FIRST_AID) then
+				professions.first_aid = skillIndex
+			elseif namesMatch(skillName, PROFESSIONS_FISHING) then
+				professions.fishing = skillIndex
 			else
-				local skillNameLower = string.lower(skillName)
-				if skillName == PROFESSIONS_COOKING or skillNameLower == string.lower(PROFESSIONS_COOKING) then
-					professions.cooking = skillIndex
-				elseif skillName == PROFESSIONS_FIRST_AID or skillNameLower == string.lower(PROFESSIONS_FIRST_AID) then
-					professions.first_aid = skillIndex
-				elseif skillName == PROFESSIONS_FISHING or skillNameLower == string.lower(PROFESSIONS_FISHING) then
-					professions.fishing = skillIndex
+				-- Some Classic clients have returned nil for isAbandonable on valid
+				-- primary professions. Use the known profession metadata as a fallback.
+				local texture = findSpellTexture and findSpellTexture(skillName)
+				local info = texture and professionInfoTable and professionInfoTable[texture]
+				local isKnownPrimary = info and info.skillLine ~= 129
+					and info.skillLine ~= 185 and info.skillLine ~= 356
+
+				if isAbandonable or isKnownPrimary then
+					if not professions.first then
+						professions.first = skillIndex
+					else
+						professions.second = skillIndex
+					end
 				end
 			end
 		end
@@ -78,7 +107,7 @@ function LibAddonCompat:GetProfessions()
 end
 
 local function FindSpellBookSlotBySpellIDs(t)
-	if not t then return end
+	if not t or type(FindSpellBookSlotBySpellID) ~= "function" then return end
 
 	for i, id in ipairs(t) do
 		local spellIndex = FindSpellBookSlotBySpellID(id)
@@ -88,11 +117,16 @@ local function FindSpellBookSlotBySpellIDs(t)
 	end
 end
 
-local function findSpellTexture(skillName)
-	local texture = GetSpellBookItemTexture(skillName)
-	if texture then return tostring(texture) end
+findSpellTexture = function(skillName)
+	if type(skillName) ~= "string" then return nil end
 
-	return professionsLocale[skillName] or professionsLocale[string.lower(skillName)]
+	local localizedTexture = professionsLocale[skillName] or professionsLocale[string.lower(skillName)]
+	if localizedTexture then return localizedTexture end
+
+	if type(GetSpellBookItemTexture) == "function" then
+		local texture = GetSpellBookItemTexture(skillName)
+		if texture then return tostring(texture) end
+	end
 end
 
 ---@private
@@ -103,7 +137,7 @@ end
 ---@field skillLine number
 
 ---@type table<string, ProfInfo>
-local professionInfoTable = {}
+professionInfoTable = {}
 setmetatable(professionInfoTable, {
 	__newindex = function(t, k, v)
 		if type(k) == "table" then
@@ -132,6 +166,10 @@ professionInfoTable[TEXTURE_JEWELCRAFTING] = { numAbilities = 2, spellIds = { 25
 professionInfoTable[TEXTURE_INSCRIPTION] = { numAbilities = 2, spellIds = { 45357, 45358, 45359, 45360, 45361, 45363, 86008, 110417, 158748, 195115 }, skillLine = 773 }
 
 function LibAddonCompat:GetProfessionInfo(skillIndex)
+	if not skillIndex or type(GetSkillLineInfo) ~= "function" then
+		return nil
+	end
+
 	local skillName, isHeader, isExpanded, skillRank, numTempPoints, skillModifier,
 	skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType,
 	skillDescription = GetSkillLineInfo(skillIndex)
@@ -143,7 +181,8 @@ function LibAddonCompat:GetProfessionInfo(skillIndex)
 		spellOffset = spellOffset - 1
 	end
 
-	return skillName, texture, skillRank, skillMaxRank, info.numAbilities, spellOffset, info.skillLine, skillModifier + numTempPoints, nil, nil
+	local bonus = (tonumber(skillModifier) or 0) + (tonumber(numTempPoints) or 0)
+	return skillName, texture, skillRank, skillMaxRank, info.numAbilities, spellOffset, info.skillLine, bonus, nil, nil
 end
 
 --- Thanks to blizzard for great bodge
@@ -224,7 +263,7 @@ elseif locale == "ptBR" then
 	professionsLocale["Encantamento"] = TEXTURE_ENCHANTING
 	professionsLocale["Alfaiataria"] = TEXTURE_TAILORING
 	professionsLocale["Esfolamento"] = TEXTURE_SKINNING
-	professionsLocale["Joalheia"] = TEXTURE_JEWELCRAFTING
+	professionsLocale["Joalheria"] = TEXTURE_JEWELCRAFTING
 elseif locale == "ruRU" then
 	professionsLocale["Кузнечное дело"] = TEXTURE_BLACKSMITHING
 	professionsLocale["Кожевничество"] = TEXTURE_LEATHERWORKING

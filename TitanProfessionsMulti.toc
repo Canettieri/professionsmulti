@@ -1,4 +1,4 @@
-## Interface: 120007
+## Interface: 120100
 ## Title: Titan Panel [|cff336699Professions|r] Multi! |cff00aa00@project-version@|r
 ## Notes: Track all professions! Right-click on Titan Panel, go to "Profession" tab and enjoy.
 ## Notes-ptBR: Rastreie todas profissões! Clique com o botão direito no Painel Titan, vá na aba "Profissão" e aproveite.
@@ -23,41 +23,14 @@ Core\languages\ruRU.lua
 Core\ElioteDropDownMenu-1.0.lua
 Core\Elib-4.0.lua
 Core\ProfessionsCore.lua
+Core\Menus.lua
+Core\ProfessionAPI.lua
+Core\ProfessionTracker.lua
+Core\ReagentTracker.lua
 TitanArchaeologyFragmentsMulti.lua
 TitanMasterMulti.lua
-Professions\TitanAlchemyMulti.lua
-Professions\TitanArchaeologyMulti.lua
-Professions\TitanBlacksmithingMulti.lua
-Professions\TitanCookingMulti.lua
-Professions\TitanEnchantingMulti.lua
-Professions\TitanEngineeringMulti.lua
-Professions\TitanFishingMulti.lua
-Professions\TitanHerbalismMulti.lua
-Professions\TitanInscriptionMulti.lua
-Professions\TitanJewelcraftingMulti.lua
-Professions\TitanLeatherworkingMulti.lua
-Professions\TitanMiningMulti.lua
-Professions\TitanSkinningMulti.lua
-Professions\TitanTailoringMulti.lua
-Reagents.BfA\TitanEnchantingReagents.lua
-Reagents.BfA\TitanFishingReagents.lua
-Reagents.BfA\TitanHerbalismReagents.lua
-Reagents.BfA\TitanMiningReagents.lua
-Reagents.BfA\TitanSkinningReagents.lua
-Reagents.BfA\TitanTailoringReagents.lua
-Reagents.Legion\TitanEnchantingReagents.lua
-Reagents.Legion\TitanFishingReagents.lua
-Reagents.Legion\TitanHerbalismReagents.lua
-Reagents.Legion\TitanMiningReagents.lua
-Reagents.Legion\TitanSkinningReagents.lua
-Reagents.Legion\TitanTailoringReagents.lua
-#Reagents.Shadowlands\TitanAlchemyReagents.lua
-Reagents.Shadowlands\TitanCookingReagents.lua
-Reagents.Shadowlands\TitanEnchantingReagents.lua
-Reagents.Shadowlands\TitanFishingReagents.lua
-Reagents.Shadowlands\TitanHerbalismReagents.lua
-Reagents.Shadowlands\TitanInscriptionReagents.lua
-Reagents.Shadowlands\TitanJewelcraftingReagents.lua
-Reagents.Shadowlands\TitanMiningReagents.lua
-Reagents.Shadowlands\TitanSkinningReagents.lua
-Reagents.Shadowlands\TitanTailoringReagents.lua
+Professions\Professions.lua
+Reagents\Legion.lua
+Reagents\BfA.lua
+Reagents\Shadowlands.lua
+Reagents\Midnight.lua

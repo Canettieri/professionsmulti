@@ -193,15 +193,13 @@ function PrepareMenu(eddm, self, id)
 		end
 	end
 
-	eddm.UIDropDownMenu_AddSpace();
+	eddm.UIDropDownMenu_AddSeparator();
 
 	eddm.UIDropDownMenu_AddButton({
 		notCheckable = true,
 		text = ACE["TITAN_PANEL_MENU_HIDE"],
 		func = function() TitanPanelRightClickMenu_Hide(id) end
 	})
-
-	eddm.UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;
@@ -210,9 +208,11 @@ function PrepareMenu(eddm, self, id)
 	eddm.UIDropDownMenu_AddButton(info);
 end
 -----------------------------------------------
-L.Elib({
+local coloredName = "Titan|c" .. L.ProfessionMenuColor .. " " .. L["archaeology"]
+	.. "|r [|c" .. L.ProfessionMenuColor .. L["fragments"] .. "|r] Multi"
+local button = L.Elib({
 	id = ID,
-	name = "Titan|cFFEC7A37 "..L["archaeology"].."|r [|cFFEC7A37"..L["fragments"].."|r] Multi",
+	name = coloredName,
 	tooltip = L["fragments"],
 	icon = ICON,
 	category = "Profession",
@@ -237,3 +237,4 @@ L.Elib({
 		Vrykul = false,
 	}
 })
+L.RestoreTitanMenuColor(button, coloredName .. "|r")

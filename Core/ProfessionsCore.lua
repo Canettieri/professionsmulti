@@ -8,6 +8,37 @@
 local ADDON_NAME, L = ...;
 local ACE = LibStub("AceLocale-3.0"):GetLocale("Titan", true)
 L.Elib = LibStub("Elib-4.0").Register
+L.ProfessionMenuColor = "FFFDCE08"
+
+-- Titan removes color codes from menuText while registering and sorting plugins.
+-- Restore them once registration has completed, as the Currencies addon does.
+local pendingMenuColors = {}
+local menuColorFrame
+
+local function RestoreMenuColors(self)
+	local pending = false
+	for button, menuText in pairs(pendingMenuColors) do
+		local registry = button.registry
+		if registry and TitanPlugins and TitanPlugins[registry.id] == registry then
+			registry.menuText = menuText
+			pendingMenuColors[button] = nil
+		else
+			pending = true
+		end
+	end
+
+	if not pending then
+		self:SetScript("OnUpdate", nil)
+	end
+end
+
+function L.RestoreTitanMenuColor(button, menuText)
+	pendingMenuColors[button] = menuText
+	if not menuColorFrame then
+		menuColorFrame = CreateFrame("Frame")
+	end
+	menuColorFrame:SetScript("OnUpdate", RestoreMenuColors)
+end
 
 local function ToggleRightSideDisplay(self, id) -- Right side display
 	TitanToggleVar(id, "DisplayOnRightSide");
@@ -97,15 +128,13 @@ function L.PrepareProfessionsMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
-	eddm.UIDropDownMenu_AddSpace();
+	eddm.UIDropDownMenu_AddSeparator();
 
 	eddm.UIDropDownMenu_AddButton({
 		notCheckable = true,
 		text = ACE["TITAN_PANEL_MENU_HIDE"],
 		func = function() TitanPanelRightClickMenu_Hide(id) end
 	})
-
-	eddm.UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;

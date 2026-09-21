@@ -1,62 +1,86 @@
-<h2>What is the purpose of this addon?</h2>
-<p>
-  This is the first package of profession plugins for Titan Panel, helping you manage your skill levels, reagents, and all archaeology fragments. It works in all languages!
-</p>
+# Titan Professions Multi
 
-<p>
-  <img src="https://i.imgur.com/M6B4WGq.jpg" alt="Inside Image" width="1095" height="523" />
-</p>
+Titan Professions Multi is a collection of Titan Panel plugins for tracking profession skill levels, session progress, reagents, and archaeology fragments across multiple versions of World of Warcraft.
 
-<h3>
-  <strong>Usage Sample:</strong>
-</h3>
-<p>
-  <img src="https://i.imgur.com/zgP7iIN.jpg" alt="Profession Bar" width="1095" height="24" />
-</p>
+Titan Panel is required.
 
-<h3><strong>FAQ:</strong></h3>
+![Titan Professions Multi menu](https://i.imgur.com/M6B4WGq.jpg)
 
-<h2>1. Retail integration</h2>
-<p>It’s working perfectly. Please report any errors or bugs here.</p>
+![Profession plugins on the Titan bar](https://i.imgur.com/zgP7iIN.jpg)
 
-<h2>2. Classic and Classic Era integration</h2>
-<p>All right! If you find any errors or bugs, you can report them here as an issue.</p>
+## Features
 
-<h2>3. Donation</h2>
-<p>
-  Please, 
-  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=7AEAZ7XG7WVDS&amp;lc=US&amp;item_name=Titan%20Multi%20Addons&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" target="_blank" rel="noopener noreferrer">
-    donate for this project
-  </a>
-  <em>(PayPal)</em>. US$5 dollars will help more than you imagine! :)
-</p>
-<p>
-  This is a list of people who helped to maintain this project through donations (<strong>thank you so much!</strong>):<br />
-  &rarr; Colleen Harper;<br />
-  &rarr; Patricia Rich;<br />
-  &rarr; Adrian Collins;<br />
-  &rarr; Jessica Allen;<br />
-  &rarr; Randol Ford;<br />
-  &rarr; Sebastian Edelmann;<br />
-  &rarr; Edwin Sutton Jr.;<br />
-  &rarr; Dean Grable;<br />
-  &rarr; Peter Cebull;<br />
-  &rarr; Max Toedtemeier.
-</p>
+- Individual Titan plugins for every profession available in the current game client.
+- A **Master** plugin that summarizes all learned professions in one tooltip.
+- Current and maximum profession skill values, active skill bonuses, and gains made during the current session.
+- Left-click access to profession windows when supported by the game client.
+- Optional profession-combination suggestions in tooltips.
+- Reagent totals from bags and the bank, with session gains and losses.
+- Per-item visibility controls for reagent plugins.
+- A single archaeology-fragments plugin on Retail and Mists of Pandaria Classic.
+- Expansion-aware loading, so each game client loads only the profession and reagent data it supports.
 
-<h2>4. How to use</h2>
-<p>
-  Right-click on the Titan Panel, then select the "Profession" tab <em>(the name depends on your language)</em>. Select the professions you want to appear on the bar. Done!
-</p>
+## Supported game versions
 
-<h2>5. What can I track?</h2>
-<p>
-  &bull;&nbsp; &nbsp; &nbsp;<strong>All professions!</strong> There is <strong>no limitation or profession missing</strong>. <em>(you can select <strong>the Master plugin</strong> to show all information in just one tooltip.);</em><br />
-  &bull;&nbsp; &nbsp; &nbsp;<strong>All the archaeology fragments in just 1 plugin!</strong> <em>[Retail and Classic];</em><br />
-  &bull;&nbsp; &nbsp; &nbsp;<strong>Reagents</strong> for Cooking, Enchanting, Fishing, Herbalism, Inscription, Jewelcrafting, Mining, Skinning and Tailoring. <em>[retail only].</em>
-</p>
+| Game client | Profession plugins | Reagent sets | Additional plugins |
+| --- | --- | --- | --- |
+| Retail / Midnight | All current professions | Legion, Battle for Azeroth, Shadowlands, and Midnight | Master and Archaeology Fragments |
+| Mists of Pandaria Classic | All professions, including First Aid and Archaeology | Mists of Pandaria | Master and Archaeology Fragments |
+| Classic Era | All available professions, including First Aid | Classic Era | Master |
+| The Burning Crusade Classic | All available professions, including First Aid and Jewelcrafting | The Burning Crusade | Master |
 
-<h2>6. How to use the <em>"Archaeology Fragments"</em> plugin:</h2>
-<p>
-  This plugin was designed to be very simple to use. Just add it to your Titan bar. When you have an artifact ready to be solved, the plugin will show the artifact race that is ready, like this: <em>"Dwarf: Ready!"</em>. You can also track all races without needing to have an artifact ready to be solved. Just right-click on the plugin and select which races you want to track.
-</p>
+First Aid is intentionally unavailable on Retail. Jewelcrafting is loaded for The Burning Crusade Classic but not for Classic Era.
+
+## How to use
+
+1. Right-click the Titan Panel.
+2. Open the **Profession** category to enable profession, Master, or archaeology plugins.
+3. Open **Profession [Reagents]** to enable reagent plugins. Category names are translated for supported locales.
+4. Right-click an enabled plugin to configure its display options.
+
+Profession plugins can display the icon, maximum skill, simplified bonuses, profession combinations, and session gains. Reagent plugins can display session changes and let you hide individual reagent types.
+
+For easier identification in the Titan menu, profession plugins are yellow, reagent plugins are orange, and the Master plugin remains red.
+
+## Archaeology Fragments
+
+Add the **Archaeology Fragments** plugin to the Titan bar to track fragments by race. When an artifact is ready to solve, the plugin displays the corresponding race as ready. Its right-click menu can also show races that do not currently have enough fragments.
+
+This plugin is available on Retail and Mists of Pandaria Classic.
+
+## Languages
+
+The addon currently includes translations for:
+
+- English
+- Brazilian Portuguese
+- German
+- Spanish (Spain)
+- Spanish (Latin America)
+- French
+- Italian
+- Korean
+- Russian
+
+Unsupported locales fall back to English. Reagent item names are obtained directly from the WoW client whenever available.
+
+## Support
+
+Please report problems through the [GitHub issue tracker](https://github.com/Canettieri/professionsmulti/issues). When reporting an issue, include the WoW game version, character locale, and any error message shown by the client.
+
+## Donations
+
+If you would like to support continued development, you can [donate through PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7AEAZ7XG7WVDS&lc=US&item_name=Titan%20Multi%20Addons&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted).
+
+Many thanks to the people who have helped maintain this project:
+
+- Colleen Harper
+- Patricia Rich
+- Adrian Collins
+- Jessica Allen
+- Randol Ford
+- Sebastian Edelmann
+- Edwin Sutton Jr.
+- Dean Grable
+- Peter Cebull
+- Max Toedtemeier

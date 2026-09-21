@@ -174,15 +174,13 @@ function PrepareMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
-	eddm.UIDropDownMenu_AddSpace();
+	eddm.UIDropDownMenu_AddSeparator();
 
 	eddm.UIDropDownMenu_AddButton({
 		notCheckable = true,
 		text = ACE["TITAN_PANEL_MENU_HIDE"],
 		func = function() TitanPanelRightClickMenu_Hide(id) end
 	})
-
-	eddm.UIDropDownMenu_AddSeparator();
 
 	info = {};
 	info.text = CLOSE;
@@ -200,9 +198,10 @@ local function OnClick(self, button)
 	end
 end
 -----------------------------------------------
-L.Elib({
+local coloredName = "Titan|cFFFF2E2E Master|r Multi"
+local button = L.Elib({
 	id = ID,
-	name = "Titan|cFFFF2e2e Master|r Multi",
+	name = coloredName,
 	tooltip = "Titan|cFFFF2e2e Master|r Multi",
 	icon = "Interface\\minimap\\TRACKING\\Profession.blp",
 	category = "Profession",
@@ -221,3 +220,4 @@ L.Elib({
 		HideMax = false,
 	}
 })
+L.RestoreTitanMenuColor(button, coloredName .. "|r")
