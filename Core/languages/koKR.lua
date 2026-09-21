@@ -84,4 +84,7 @@ L["totalSkill"] = "총 숙련도:"
 L["hideCombination"] = "조합 숨기기"
 L["buttonText"] = "바 텍스트"
 L["tooltip"] = "툴팁"
+L["barPosition"] = "바 위치"
+L["moveRight"] = "오른쪽으로 이동"
+L["moveLeft"] = "왼쪽으로 이동"
 end

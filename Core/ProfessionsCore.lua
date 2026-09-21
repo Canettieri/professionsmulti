@@ -40,6 +40,55 @@ function L.RestoreTitanMenuColor(button, menuText)
 	menuColorFrame:SetScript("OnUpdate", RestoreMenuColors)
 end
 
+function L.AddMenuTitle(eddm, text)
+	eddm.UIDropDownMenu_AddButton({
+		text = text,
+		hasArrow = false,
+		isTitle = true,
+		isUninteractable = true,
+		notClickable = true,
+		notCheckable = true,
+	})
+end
+
+function L.AddBarPositionMenu(eddm, id)
+	L.AddMenuTitle(eddm, L["barPosition"])
+
+	eddm.UIDropDownMenu_AddButton({
+		text = L["moveRight"],
+		func = function()
+			TitanUtils_ShiftButtonOnBarRight(id)
+		end,
+		keepShownOnClick = true,
+		notCheckable = true,
+	})
+
+	eddm.UIDropDownMenu_AddButton({
+		text = L["moveLeft"],
+		func = function()
+			TitanUtils_ShiftButtonOnBarLeft(id)
+		end,
+		keepShownOnClick = true,
+		notCheckable = true,
+	})
+end
+
+function L.AddMenuFooter(eddm, id)
+	eddm.UIDropDownMenu_AddSeparator()
+	eddm.UIDropDownMenu_AddButton({
+		notCheckable = true,
+		text = ACE["TITAN_PANEL_MENU_HIDE"],
+		func = function()
+			TitanPanelRightClickMenu_Hide(id)
+		end,
+	})
+	eddm.UIDropDownMenu_AddButton({
+		text = CLOSE,
+		notCheckable = true,
+		keepShownOnClick = false,
+	})
+end
+
 local function ToggleRightSideDisplay(self, id) -- Right side display
 	TitanToggleVar(id, "DisplayOnRightSide");
 	TitanPanel_InitPanelButtons();
@@ -66,13 +115,7 @@ local function ToggleSimpleBonus(self, id) -- Simples bonus display
 end
 ----------------------------------------------
 function L.PrepareProfessionsMenu(eddm, self, id)
-	eddm.UIDropDownMenu_AddButton({
-		text = TitanPlugins[id].menuText,
-		hasArrow = false,
-		isTitle = true,
-		isUninteractable = true,
-		notCheckable = true
-	})
+	L.AddMenuTitle(eddm, TitanPlugins[id].menuText)
 
 	local info = {};
 	info.text = L["buttonText"];
@@ -113,6 +156,8 @@ function L.PrepareProfessionsMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
+	eddm.UIDropDownMenu_AddSpace()
+
 	info = {};
 	info.text = L["tooltip"];
 	info.notClickable = true
@@ -128,17 +173,7 @@ function L.PrepareProfessionsMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
-	eddm.UIDropDownMenu_AddSeparator();
-
-	eddm.UIDropDownMenu_AddButton({
-		notCheckable = true,
-		text = ACE["TITAN_PANEL_MENU_HIDE"],
-		func = function() TitanPanelRightClickMenu_Hide(id) end
-	})
-
-	info = {};
-	info.text = CLOSE;
-	info.notCheckable = true
-	info.keepShownOnClick = false
-	eddm.UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddSpace()
+	L.AddBarPositionMenu(eddm, id)
+	L.AddMenuFooter(eddm, id)
 end

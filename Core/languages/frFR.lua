@@ -86,4 +86,7 @@ L["totalSkill"] = "Compétence totale :"
 L["hideCombination"] = "Masquer les combinaisons"
 L["buttonText"] = "Texte de la barre"
 L["tooltip"] = "Info-bulle"
+L["barPosition"] = "Position sur la barre"
+L["moveRight"] = "Déplacer vers la droite"
+L["moveLeft"] = "Déplacer vers la gauche"
 end

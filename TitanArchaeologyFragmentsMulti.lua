@@ -151,13 +151,7 @@ end
 
 -----------------------------------------------
 function PrepareMenu(eddm, self, id)
-	eddm.UIDropDownMenu_AddButton({
-		text = TitanPlugins[id].menuText,
-		hasArrow = false,
-		isTitle = true,
-		isUninteractable = true,
-		notCheckable = true
-	})
+	L.AddMenuTitle(eddm, TitanPlugins[id].menuText)
 
 	local continue = false
 	for i = 1, 20 do
@@ -168,13 +162,7 @@ function PrepareMenu(eddm, self, id)
 	end
 
 	if continue then
-		local info = {};
-		info = {};
-		info.text = L["buttonText"];
-		info.notClickable = true
-		info.notCheckable = true
-		info.isTitle = true
-		eddm.UIDropDownMenu_AddButton(info);
+		L.AddMenuTitle(eddm, L["buttonText"])
 
 		local info = {};
 		info.text = L["hidehint"];
@@ -190,12 +178,8 @@ function PrepareMenu(eddm, self, id)
 		info.keepShownOnClick = true
 		eddm.UIDropDownMenu_AddButton(info);
 
-		local info = {};
-		info.text = L["archfragments"];
-		info.notClickable = true
-		info.notCheckable = true
-		info.isTitle = true
-		eddm.UIDropDownMenu_AddButton(info);
+		eddm.UIDropDownMenu_AddSpace()
+		L.AddMenuTitle(eddm, L["archfragments"])
 
 		for i = 1, 20 do
 			local info = {};
@@ -205,21 +189,12 @@ function PrepareMenu(eddm, self, id)
 			info.keepShownOnClick = true
 			eddm.UIDropDownMenu_AddButton(info);
 		end
+
+		eddm.UIDropDownMenu_AddSpace()
 	end
 
-	eddm.UIDropDownMenu_AddSeparator();
-
-	eddm.UIDropDownMenu_AddButton({
-		notCheckable = true,
-		text = ACE["TITAN_PANEL_MENU_HIDE"],
-		func = function() TitanPanelRightClickMenu_Hide(id) end
-	})
-
-	info = {};
-	info.text = CLOSE;
-	info.notCheckable = true
-	info.keepShownOnClick = false
-	eddm.UIDropDownMenu_AddButton(info);
+	L.AddBarPositionMenu(eddm, id)
+	L.AddMenuFooter(eddm, id)
 end
 -----------------------------------------------
 local coloredName = "Titan|c" .. L.ProfessionMenuColor .. " " .. L["archaeology"]

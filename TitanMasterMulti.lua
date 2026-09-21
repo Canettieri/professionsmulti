@@ -124,13 +124,7 @@ end
 end
 -----------------------------------------------
 function PrepareMenu(eddm, self, id)
-	eddm.UIDropDownMenu_AddButton({
-		text = TitanPlugins[id].menuText,
-		hasArrow = false,
-		isTitle = true,
-		isUninteractable = true,
-		notCheckable = true
-	})
+	L.AddMenuTitle(eddm, TitanPlugins[id].menuText)
 
 	local info = {};
 	info.text = L["primprof"];
@@ -153,12 +147,8 @@ function PrepareMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = {};
-	info.text = L["tooltip"];
-	info.notClickable = true
-	info.notCheckable = true
-	info.isTitle = true
-	eddm.UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddSpace()
+	L.AddMenuTitle(eddm, L["tooltip"])
 
 	local info = {};
 	info.text = L["hideTutorial"];
@@ -174,19 +164,9 @@ function PrepareMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
-	eddm.UIDropDownMenu_AddSeparator();
-
-	eddm.UIDropDownMenu_AddButton({
-		notCheckable = true,
-		text = ACE["TITAN_PANEL_MENU_HIDE"],
-		func = function() TitanPanelRightClickMenu_Hide(id) end
-	})
-
-	info = {};
-	info.text = CLOSE;
-	info.notCheckable = true
-	info.keepShownOnClick = false
-	eddm.UIDropDownMenu_AddButton(info);
+	eddm.UIDropDownMenu_AddSpace()
+	L.AddBarPositionMenu(eddm, id)
+	L.AddMenuFooter(eddm, id)
 end
 -----------------------------------------------
 local function OnClick(self, button)

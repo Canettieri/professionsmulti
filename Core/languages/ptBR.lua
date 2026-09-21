@@ -86,4 +86,7 @@ L["totalSkill"] = "Perícia Total:"
 L["hideCombination"] = "Esconder Combinações"
 L["buttonText"] = "Texto da Barra"
 L["tooltip"] = "Texto de Ajuda"
+L["barPosition"] = "Posição na Barra"
+L["moveRight"] = "Mover à Direita"
+L["moveLeft"] = "Mover à Esquerda"
 end

@@ -88,4 +88,7 @@ L["totalSkill"] = "Gesamtfertigkeit:"
 L["hideCombination"] = "Kombination ausblenden"
 L["buttonText"] = "Leistentext"
 L["tooltip"] = "Tooltip"
+L["barPosition"] = "Position auf der Leiste"
+L["moveRight"] = "Nach rechts verschieben"
+L["moveLeft"] = "Nach links verschieben"
 end

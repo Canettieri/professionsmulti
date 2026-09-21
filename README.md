@@ -38,7 +38,7 @@ First Aid is intentionally unavailable on Retail. Jewelcrafting is loaded for Th
 3. Open **Profession [Reagents]** to enable reagent plugins. Category names are translated for supported locales.
 4. Right-click an enabled plugin to configure its display options.
 
-Profession plugins can display the icon, maximum skill, simplified bonuses, profession combinations, and session gains. Reagent plugins can display session changes and let you hide individual reagent types.
+Profession plugins can display the icon, maximum skill, simplified bonuses, profession combinations, and session gains. Reagent plugins can display session changes and let you hide individual reagent types. Every plugin menu also includes controls for moving the plugin left or right on its current Titan bar.
 
 For easier identification in the Titan menu, profession plugins are yellow, reagent plugins are orange, and the Master plugin remains red.
 

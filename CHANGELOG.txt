@@ -1,3 +1,17 @@
+# Titan Professions Multi 10.1.0
+
+## Added
+
+- Added **Move Left** and **Move Right** controls to every plugin menu.
+- Added translations for the new bar-position controls in all supported languages.
+
+## Changed
+
+- Added consistent spacing between the Bar Text, Tooltip, and Bar Position sections.
+- Centralized the shared menu title, bar-position, Hide, and Close controls for consistent behavior across Retail, Mists of Pandaria Classic, Classic Era, and The Burning Crusade Classic.
+
+---
+
 # Titan Professions Multi 10.0.0
 
 ## Added

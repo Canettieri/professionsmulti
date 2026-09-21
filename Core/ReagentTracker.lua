@@ -139,16 +139,6 @@ local function getExpansionLabel(expansion, short)
 	return (key and L[key]) or fallback or expansion.name
 end
 
-local function addTitle(eddm, text)
-	eddm.UIDropDownMenu_AddButton({
-		text = text,
-		hasArrow = false,
-		isTitle = true,
-		isUninteractable = true,
-		notCheckable = true,
-	})
-end
-
 local function addToggle(eddm, id, text, variable, onToggle)
 	eddm.UIDropDownMenu_AddButton({
 		text = text,
@@ -262,8 +252,8 @@ function ReagentTracker.Register(config)
 	end
 
 	local function prepareMenu(eddm)
-		addTitle(eddm, TitanPlugins[id].menuText)
-		addTitle(eddm, L["buttonText"])
+		L.AddMenuTitle(eddm, TitanPlugins[id].menuText)
+		L.AddMenuTitle(eddm, L["buttonText"])
 
 		addToggle(eddm, id, ACE["TITAN_PANEL_MENU_SHOW_ICON"], "ShowIcon")
 		addToggle(eddm, id, L["showbb"], "ShowBarBalance")
@@ -272,23 +262,14 @@ function ReagentTracker.Register(config)
 		end)
 
 		eddm.UIDropDownMenu_AddSpace()
+		L.AddMenuTitle(eddm, L["tooltip"])
 		for _, item in ipairs(config.items) do
 			addToggle(eddm, id, (L["hide"] or "Hide") .. " " .. getItemName(item), getHideVariable(item))
 		end
 
-		eddm.UIDropDownMenu_AddSeparator()
-		eddm.UIDropDownMenu_AddButton({
-			notCheckable = true,
-			text = ACE["TITAN_PANEL_MENU_HIDE"],
-			func = function()
-				TitanPanelRightClickMenu_Hide(id)
-			end,
-		})
-		eddm.UIDropDownMenu_AddButton({
-			notCheckable = true,
-			text = CLOSE,
-			keepShownOnClick = false,
-		})
+		eddm.UIDropDownMenu_AddSpace()
+		L.AddBarPositionMenu(eddm, id)
+		L.AddMenuFooter(eddm, id)
 	end
 
 	local coloredName = "Titan|c" .. REAGENT_MENU_COLOR .. " " .. professionName

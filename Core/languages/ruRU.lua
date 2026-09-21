@@ -84,4 +84,7 @@ L["totalSkill"] = "Общий навык:"
 L["hideCombination"] = "Скрыть сочетания"
 L["buttonText"] = "Текст на панели"
 L["tooltip"] = "Всплывающее окно"
+L["barPosition"] = "Положение на панели"
+L["moveRight"] = "Переместить вправо"
+L["moveLeft"] = "Переместить влево"
 end
