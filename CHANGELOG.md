@@ -1,27 +1,29 @@
-# Titan Professions Multi 10.1.0
+# Changelog
 
-## Added
+All notable changes to this project will be documented in this file.
+
+## [Unreleased]
+
+### Added
 
 - Added **Move Left** and **Move Right** controls to every plugin menu.
 - Added translations for the new bar-position controls in all supported languages.
 
-## Changed
+### Changed
 
 - Added consistent spacing between the Bar Text, Tooltip, and Bar Position sections.
 - Centralized the shared menu title, bar-position, Hide, and Close controls for consistent behavior across Retail, Mists of Pandaria Classic, Classic Era, and The Burning Crusade Classic.
 
----
+## [10.0.0] - 2026-09-21
 
-# Titan Professions Multi 10.0.0
-
-## Added
+### Added
 
 - Added profession reagent trackers for Midnight on Retail.
 - Added reagent trackers for Mists of Pandaria Classic, Classic Era, and The Burning Crusade Classic.
 - Added a dedicated Titan Panel category for reagent plugins: **Profession [Reagents]**.
 - Added complete missing translations for German, Spanish (Spain and Latin America), French, Italian, Korean, and Russian.
 
-## Changed
+### Changed
 
 - Rebuilt all profession plugins around a shared, data-driven profession tracker while preserving their existing Titan plugin IDs and features.
 - Rebuilt all reagent plugins around a shared reagent tracker with bag and bank totals, per-item visibility controls, and session gains and losses.
@@ -35,7 +37,7 @@
 - Standardized profession plugin names in yellow and reagent plugin names in orange, while preserving the Master plugin in red.
 - Removed obsolete reagent localization entries; reagent item names now come from the WoW client whenever available.
 
-## Fixed
+### Fixed
 
 - Preserved profession session gains, skill bonuses, maximum-skill warnings, tooltips, and click-to-open behavior after the shared-engine migration.
 - Improved profession cap handling across Retail and Mists of Pandaria Classic, including Midnight values.
@@ -47,9 +49,5 @@
   - Added a fallback for Classic clients that do not reliably mark primary professions as abandonable.
   - Improved localized profession detection.
 
-## Compatibility
-
-- Retail / Midnight
-- Mists of Pandaria Classic
-- Classic Era
-- The Burning Crusade Classic
+[unreleased]: https://github.com/Canettieri/professionsmulti/compare/v10.0.0...HEAD
+[10.0.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v10.0.0
