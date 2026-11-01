@@ -5,7 +5,7 @@ local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetad
 local version = GetAddOnMetadata(ADDON_NAME, "Version")
 local currentExpansion = rawget(_G, "LE_EXPANSION_LEVEL_CURRENT")
 local burningCrusade = rawget(_G, "LE_EXPANSION_BURNING_CRUSADE")
-local isBurningCrusade = burningCrusade and currentExpansion == burningCrusade
+local isBurningCrusade = not L.IsForever and burningCrusade and currentExpansion == burningCrusade
 
 local professions = {
 	{

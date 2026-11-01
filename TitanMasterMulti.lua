@@ -171,10 +171,10 @@ end
 -----------------------------------------------
 local function OnClick(self, button)
 	if (button == "MiddleButton") and profs[2] and profs[2][INFOS_INDEX.PROFOFFSET] then
-		CastSpell(profs[2][INFOS_INDEX.PROFOFFSET] + 1, "Spell")
+		L.ProfessionAPI:OpenProfession({ offset = profs[2][INFOS_INDEX.PROFOFFSET] })
 	end
 	if (button == "LeftButton") and profs[1] and profs[1][INFOS_INDEX.PROFOFFSET] then
-		CastSpell(profs[1][INFOS_INDEX.PROFOFFSET] + 1, "Spell")
+		L.ProfessionAPI:OpenProfession({ offset = profs[1][INFOS_INDEX.PROFOFFSET] })
 	end
 end
 -----------------------------------------------

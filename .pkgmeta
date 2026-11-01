@@ -2,6 +2,7 @@ package-as: TitanProfessionsMulti
 
 ignore:
     - .gitignore
+    - tests
     
 manual-changelog:
     filename: CHANGELOG.md

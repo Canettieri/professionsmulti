@@ -28,6 +28,7 @@ Core\Menus.lua
 Classic\ProfessionAPI.lua
 Core\ProfessionTracker.lua
 Core\ReagentTracker.lua
+Reagents\ClassicData.lua
 Reagents\Classic.lua
 Classic\Professions\Professions.lua
 Classic\TitanMasterMulti-ClassicEra.lua

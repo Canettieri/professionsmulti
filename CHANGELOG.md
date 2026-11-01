@@ -2,15 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [11.0.0] - 2026-11-01
 
 ### Added
 
+- Added a dedicated Forever (Camelot, interface 16001) manifest with Classic professions, First Aid, Classic reagents, and Master.
+- Added 31 Forever-specific materials across the six reagent plugins, with translated Forever menu labels.
 - Added **Move Left** and **Move Right** controls to every plugin menu.
 - Added translations for the new bar-position controls in all supported languages.
 
 ### Changed
 
+- Updated the Retail interface version to 120105 for WoW 12.1.5.
+- Adapted Forever's First Aid slot and 300-point profession cap to the shared tracker.
+- Split Classic reagent data from client registration, keeping a shared baseline and a separate Forever additions file without changing existing plugin IDs or item settings.
+- Use the modern spellbook API for profession and Master clicks when available, and skip profession casts during combat.
+- Prefer modern C_Item APIs for reagent counts and item information, with legacy fallbacks.
 - Added consistent spacing between the Bar Text, Tooltip, and Bar Position sections.
 - Centralized the shared menu title, bar-position, Hide, and Close controls for consistent behavior across Retail, Mists of Pandaria Classic, Classic Era, and The Burning Crusade Classic.
 
@@ -49,5 +56,5 @@ All notable changes to this project will be documented in this file.
   - Added a fallback for Classic clients that do not reliably mark primary professions as abandonable.
   - Improved localized profession detection.
 
-[unreleased]: https://github.com/Canettieri/professionsmulti/compare/v10.0.0...HEAD
+[11.0.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v11.0.0
 [10.0.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v10.0.0

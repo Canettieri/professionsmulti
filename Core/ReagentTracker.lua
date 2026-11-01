@@ -10,6 +10,9 @@ local ACE = AceLocale:GetLocale(rawget(_G, "TITAN_ID") or "Titan", true)
 	or {}
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local VERSION = GetAddOnMetadata(ADDON_NAME, "Version")
+local GetItemCount = C_Item and C_Item.GetItemCount or GetItemCount
+local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
+local GetItemInfoInstant = C_Item and C_Item.GetItemInfoInstant or GetItemInfoInstant
 
 local ReagentTracker = {}
 L.ReagentTracker = ReagentTracker

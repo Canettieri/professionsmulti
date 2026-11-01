@@ -27,9 +27,14 @@ Titan Panel is required.
 | Retail / Midnight | All current professions | Legion, Battle for Azeroth, Shadowlands, and Midnight | Master and Archaeology Fragments |
 | Mists of Pandaria Classic | All professions, including First Aid and Archaeology | Mists of Pandaria | Master and Archaeology Fragments |
 | Classic Era | All available professions, including First Aid | Classic Era | Master |
+| WoW: Forever (Camelot, interface 16001) | Classic professions, including First Aid | Classic base with Forever additions | Master |
 | The Burning Crusade Classic | All available professions, including First Aid and Jewelcrafting | The Burning Crusade | Master |
 
 First Aid is intentionally unavailable on Retail. Jewelcrafting is loaded for The Burning Crusade Classic but not for Classic Era.
+
+Forever uses `TitanProfessionsMulti_Camelot.toc` and the modern profession API, with First Aid in its client-specific slot and a profession cap of 300. It does not load Archaeology or later-expansion reagent sets. Install a Forever-compatible version of Titan Panel alongside this addon. In-game validation on Forever is still required; local checks cannot verify protected clicks or bank behavior in the client.
+
+Classic and Forever share `Reagents/ClassicData.lua`. Separate `Classic.lua` and `Forever.lua` entry points register the appropriate catalogue, so Forever additions never appear on Classic Era. Forever adds 31 materials across the existing six reagent plugins, including scarce materials, endgame herbs, herb seeds, new metals and bars, leather, dyes, and fishing ingredients. Plugin IDs and existing per-item settings are preserved. See [Forever reagent research](docs/forever-reagents.md) for item IDs, sources, and scope.
 
 ## How to use
 

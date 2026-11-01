@@ -128,6 +128,14 @@ function ProfessionAPI:GetMaximumCap(config)
 end
 
 function ProfessionAPI:OpenProfession(info)
+	if not info or not info.offset then return false end
+	if InCombatLockdown and InCombatLockdown() then return false end
+
+	if C_SpellBook and C_SpellBook.CastSpellBookItem and Enum and Enum.SpellBookSpellBank then
+		C_SpellBook.CastSpellBookItem(info.offset + 1, Enum.SpellBookSpellBank.Player)
+		return true
+	end
+
 	if info and info.offset and type(CastSpell) == "function" then
 		CastSpell(info.offset + 1, "Spell")
 		return true
