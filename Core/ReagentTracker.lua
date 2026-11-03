@@ -24,14 +24,34 @@ local REAGENT_MENU_COLOR = "FFEC7A37"
 local trackers = {}
 local eventFrame
 local sessionStarted = false
+local isRetail = WOW_PROJECT_MAINLINE ~= nil and WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 local function getItemCount(itemID, includeBank)
+	if isRetail then
+		return C_Item.GetItemCount(itemID, includeBank, false, false, false) or 0
+	end
+
 	local ok, count = pcall(GetItemCount, itemID, includeBank, false, includeBank)
 	if not ok then
 		count = GetItemCount(itemID, includeBank)
 	end
 
 	return count or 0
+end
+
+local function readBagCounts()
+	if not isRetail then return end
+
+	local counts = {}
+	for bag = Enum.BagIndex.Backpack, Enum.BagIndex.ReagentBag do
+		for slot = 1, C_Container.GetContainerNumSlots(bag) do
+			local item = C_Container.GetContainerItemInfo(bag, slot)
+			if item then
+				counts[item.itemID] = (counts[item.itemID] or 0) + item.stackCount
+			end
+		end
+	end
+	return counts
 end
 
 local function getItemName(item)
@@ -62,16 +82,22 @@ local function getItemIcon(item)
 	return QUESTION_MARK_ICON
 end
 
-local function getItemLink(itemID, fallbackName)
+local function getVariantLabel(itemID, fallbackName, rank)
 	local link = C_Item and C_Item.GetItemLinkByID and C_Item.GetItemLinkByID(itemID)
 	if not link then
 		link = select(2, GetItemInfo(itemID))
 	end
 
-	return link or fallbackName
+	if link then
+		return link
+	end
+	if C_Item and C_Item.RequestLoadItemDataByID then
+		C_Item.RequestLoadItemDataByID(itemID)
+	end
+	return L["qualityfallback"]:format(fallbackName, rank)
 end
 
-local function getCounts(item, countCache)
+local function getCounts(item, countCache, bagCounts)
 	local bags = 0
 	local total = 0
 	local seen = {}
@@ -83,7 +109,7 @@ local function getCounts(item, countCache)
 			local counts = countCache and countCache[itemID]
 			if not counts then
 				counts = {
-					bags = getItemCount(itemID, false),
+					bags = bagCounts and (bagCounts[itemID] or 0) or getItemCount(itemID, false),
 					total = getItemCount(itemID, true),
 				}
 				if countCache then
@@ -101,9 +127,10 @@ end
 
 function ReagentTracker.RefreshAll(resetSession)
 	local countCache = {}
+	local bagCounts = readBagCounts()
 
 	for _, tracker in ipairs(trackers) do
-		local ok, message = pcall(tracker.refresh, resetSession, countCache)
+		local ok, message = pcall(tracker.refresh, resetSession, countCache, bagCounts)
 		if not ok and tracker.lastError ~= message then
 			tracker.lastError = message
 			L.ReagentRuntimeErrors[#L.ReagentRuntimeErrors + 1] = tracker.id .. ": " .. tostring(message)
@@ -177,11 +204,12 @@ function ReagentTracker.Register(config)
 		savedVariables[getHideVariable(item)] = false
 	end
 
-	local function refresh(resetSession, countCache)
+	local function refresh(resetSession, countCache, bagCounts)
 		local changed = false
 
 		for index, item in ipairs(config.items) do
-			local _, total = getCounts(item, countCache)
+			local bags, total = getCounts(item, countCache, bagCounts)
+			total = math.max(bags, total)
 			local state = states[index]
 
 			if resetSession then
@@ -234,19 +262,27 @@ function ReagentTracker.Register(config)
 		end
 
 		local lines = {}
+		local bagCounts = readBagCounts()
 		for _, item in ipairs(config.items) do
-			local bags, total = getCounts(item)
+			local bags, total = getCounts(item, nil, bagCounts)
 			local bank = math.max(0, total - bags)
 			local name = getItemName(item)
 
-			lines[#lines + 1] = "\n \n|T" .. getItemIcon(item) .. ":0|t |cFFFFFFFF" .. name .. "|r"
+			if #lines > 0 then
+				lines[#lines + 1] = "\n "
+			end
+			lines[#lines + 1] = "\n|T" .. getItemIcon(item) .. ":0|t |cFFFFFFFF" .. name .. "|r"
 			lines[#lines + 1] = "\n" .. L["totalbag"] .. "\t" .. TitanUtils_GetHighlightText(tostring(bags))
 			lines[#lines + 1] = "\n" .. L["totalbank"] .. "\t" .. TitanUtils_GetHighlightText(tostring(bank))
 
 			if #item.ids > 1 then
-				for _, itemID in ipairs(item.ids) do
+				lines[#lines + 1] = "\n" .. L["totalbyquality"]
+				for rank, itemID in ipairs(item.ids) do
 					local variantTotal = getItemCount(itemID, true)
-					lines[#lines + 1] = "\n  " .. getItemLink(itemID, name) .. "\t" .. TitanUtils_GetHighlightText(tostring(variantTotal))
+					if bagCounts then
+						variantTotal = math.max(bagCounts[itemID] or 0, variantTotal)
+					end
+					lines[#lines + 1] = "\n  " .. getVariantLabel(itemID, name, rank) .. "\t" .. TitanUtils_GetHighlightText(tostring(variantTotal))
 				end
 			end
 		end

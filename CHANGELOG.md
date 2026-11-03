@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.1.0] - 2026-11-03
+
+### Changed
+
+- Label reagent subtotals by quality and clarify that they include bags and bank.
+- Reduce the space above the first reagent while keeping a blank line between reagents.
+
+### Fixed
+
+- Count Retail reagents directly from equipped bags, including the reagent bag, before calculating the bank balance.
+- Show the quality rank when a reagent variant's item link is still loading.
+
 ## [11.0.0] - 2026-11-01
 
 ### Added
@@ -56,5 +68,6 @@ All notable changes to this project will be documented in this file.
   - Added a fallback for Classic clients that do not reliably mark primary professions as abandonable.
   - Improved localized profession detection.
 
+[11.1.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v11.1.0
 [11.0.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v11.0.0
 [10.0.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v10.0.0
