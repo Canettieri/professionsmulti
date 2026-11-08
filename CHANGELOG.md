@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.2.0] - 2026-11-08
+
+### Added
+
+- Added ten Midnight Cooking reagents introduced in patch 12.1, including Smooth Loin, with individual counts and visibility toggles.
+- Added the five raw meats used to prepare Practically Pork and the five plant parts used to prepare Plant Protein.
+
 ## [11.1.0] - 2026-11-03
 
 ### Changed
@@ -68,6 +75,7 @@ All notable changes to this project will be documented in this file.
   - Added a fallback for Classic clients that do not reliably mark primary professions as abandonable.
   - Improved localized profession detection.
 
+[11.2.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v11.2.0
 [11.1.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v11.1.0
 [11.0.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v11.0.0
 [10.0.0]: https://github.com/Canettieri/professionsmulti/releases/tag/v10.0.0
