@@ -169,18 +169,14 @@ local function getExpansionLabel(expansion, short)
 	return (key and L[key]) or fallback or expansion.name
 end
 
-local function addToggle(eddm, id, text, variable, onToggle)
+local function addToggle(eddm, id, text, variable)
 	eddm.UIDropDownMenu_AddButton({
 		text = text,
 		checked = TitanGetVar(id, variable),
 		keepShownOnClick = true,
 		func = function()
 			TitanToggleVar(id, variable)
-			if onToggle then
-				onToggle()
-			else
-				TitanPanelButton_UpdateButton(id)
-			end
+			TitanPanelButton_UpdateButton(id)
 		end,
 	})
 end
@@ -196,11 +192,13 @@ function ReagentTracker.Register(config)
 		ShowIcon = 1,
 		ShowLabelText = false,
 		ShowBarBalance = false,
+		HideAbsentReagents = false,
+		BagsOnly = false,
 		DisplayOnRightSide = false,
 	}
 
 	for index, item in ipairs(config.items) do
-		states[index] = { current = 0, start = 0 }
+		states[index] = { current = 0, start = 0, bags = 0, startBags = 0 }
 		savedVariables[getHideVariable(item)] = false
 	end
 
@@ -214,10 +212,12 @@ function ReagentTracker.Register(config)
 
 			if resetSession then
 				state.start = total
+				state.startBags = bags
 			end
 
-			if state.current ~= total then
+			if state.current ~= total or state.bags ~= bags then
 				state.current = total
+				state.bags = bags
 				changed = true
 			end
 		end
@@ -229,14 +229,17 @@ function ReagentTracker.Register(config)
 
 	local function getButtonText(self, pluginID)
 		local text = {}
+		local bagsOnly = TitanGetVar(pluginID, "BagsOnly")
+		local hideAbsent = TitanGetVar(pluginID, "HideAbsentReagents")
 
 		for index, item in ipairs(config.items) do
-			if not TitanGetVar(pluginID, getHideVariable(item)) then
-				local state = states[index]
-				local itemText = "  |T" .. getItemIcon(item) .. ":0|t " .. TitanUtils_GetHighlightText(tostring(state.current))
+			local state = states[index]
+			local count = bagsOnly and state.bags or state.current
+			if not TitanGetVar(pluginID, getHideVariable(item)) and (not hideAbsent or count > 0) then
+				local itemText = "  |T" .. getItemIcon(item) .. ":0|t " .. TitanUtils_GetHighlightText(tostring(count))
 
 				if TitanGetVar(pluginID, "ShowBarBalance") then
-					local balance = state.current - state.start
+					local balance = count - (bagsOnly and state.startBags or state.start)
 					if balance > 0 then
 						itemText = itemText .. " |cFF69FF69[+" .. balance .. "]|r"
 					elseif balance < 0 then
@@ -296,9 +299,9 @@ function ReagentTracker.Register(config)
 
 		addToggle(eddm, id, ACE["TITAN_PANEL_MENU_SHOW_ICON"], "ShowIcon")
 		addToggle(eddm, id, L["showbb"], "ShowBarBalance")
-		addToggle(eddm, id, ACE["TITAN_CLOCK_MENU_DISPLAY_ON_RIGHT_SIDE"], "DisplayOnRightSide", function()
-			TitanPanel_InitPanelButtons()
-		end)
+		addToggle(eddm, id, L["hideAbsentReagents"], "HideAbsentReagents")
+		addToggle(eddm, id, L["bagsOnlyReagents"], "BagsOnly")
+		L.AddRightSideMenuToggle(eddm, id)
 
 		eddm.UIDropDownMenu_AddSpace()
 		L.AddMenuTitle(eddm, L["tooltip"])

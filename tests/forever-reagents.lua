@@ -54,6 +54,7 @@ print("PASS: separate catalogues, fresh data, 31 unique additions, stable IDs, T
 
 -- Exercise the real tracker with modern item APIs and Titan callbacks.
 local bags, bank, queried = 3, 7, {}
+local updates = 0
 GetItemCount = nil
 C_Item = {
 	GetItemCount = function(id, includeBank, uses, reagentBank)
@@ -65,7 +66,10 @@ C_Item = {
 	GetItemIconByID = function() return 1 end,
 }
 C_AddOns = { GetAddOnMetadata = function() return "test" end }
-LibStub = function() return { GetLocale = function() return {} end } end
+LibStub = function(name)
+	if name == "Elib-4.0" then return {} end
+	return { GetLocale = function() return { TITAN_CLOCK_MENU_DISPLAY_ON_RIGHT_SIDE = "Display on Right Side" } end }
+end
 TitanPlugins = {}
 local vars, callbacks, event
 CreateFrame = function()
@@ -74,14 +78,13 @@ end
 TitanGetVar = function(id, key) return vars[id][key] end
 TitanToggleVar = function(id, key) vars[id][key] = not vars[id][key] end
 TitanUtils_GetHighlightText = tostring
-TitanPanelButton_UpdateButton = function() end
+TitanPanelButton_UpdateButton = function() updates = updates + 1 end
 
 local function integration(flavor)
 	queried, vars, callbacks = {}, {}, {}
-	local namespace = {
-		RestoreTitanMenuColor = function() end, AddMenuTitle = function() end,
-		AddBarPositionMenu = function() end, AddMenuFooter = function() end,
-	}
+	local namespace = {}
+	loadAddon("Core/ProfessionsCore.lua", namespace)
+	namespace.RestoreTitanMenuColor = function() end
 	namespace.Elib = function(config)
 		vars[config.id], callbacks[config.id] = config.savedVariables, config
 		TitanPlugins[config.id] = { menuText = config.name }
@@ -105,19 +108,62 @@ local function integration(flavor)
 	bags = 5
 	event(nil, "BAG_UPDATE_DELAYED")
 	assert(config.getButtonText(nil, id):find("[+2]", 1, true))
+
+	-- Both switches use the selected count; the tooltip always retains both locations.
+	assert(vars[id].HideAbsentReagents == false and vars[id].BagsOnly == false)
+	vars[id].HideAbsentReagents = true
+	vars[id].BagsOnly = true
+	assert(config.getButtonText(nil, id):find("[+2]", 1, true))
+	local previousUpdates = updates
+	bags, bank = 0, 12
+	event(nil, "BAG_UPDATE_DELAYED")
+	assert(updates > previousUpdates, "Moving items to bank must refresh the bar even if totals are unchanged")
+	assert(config.getButtonText(nil, id) == "")
+	local bankTooltip = config.getTooltipText()
+	assert(bankTooltip:find("Total in Bag: \t0", 1, true) and bankTooltip:find("Total in Bank: \t12", 1, true))
+	vars[id].BagsOnly = false
+	assert(config.getButtonText(nil, id):find("[+2]", 1, true))
+	vars[id].BagsOnly = true
+	bags, bank = 5, 7
+	event(nil, "BAG_UPDATE_DELAYED")
+	assert(config.getButtonText(nil, id):find("[+2]", 1, true))
+	vars[id].BagsOnly = false
+	vars[id].HideAbsentReagents = false
+
 	local menu = {}
 	config.prepareMenu({
 		UIDropDownMenu_AddSpace = function() end,
+		UIDropDownMenu_AddSeparator = function() end,
 		UIDropDownMenu_AddButton = function(info) menu[#menu + 1] = info end,
 	})
 	local found = false
+	local sideToggle
+	local toggles = {}
 	for _, entry in ipairs(menu) do
+		if entry.text == "Display on Right Side" then sideToggle = entry end
+		if entry.text == namespace.hideAbsentReagents or entry.text == namespace.bagsOnlyReagents then
+			entry.func(); toggles[entry.text] = true
+		end
 		if entry.text == "Hide Pyrite" then entry.func(); found = true end
 	end
+	assert(toggles[namespace.hideAbsentReagents] and toggles[namespace.bagsOnlyReagents])
+	assert(vars[id].HideAbsentReagents and vars[id].BagsOnly)
 	assert(found and vars[id].HideItem_249391)
+	assert(sideToggle and not sideToggle.checked)
+	local swaps = 0
+	TitanUtils_SwapButtonSide = function(pluginID)
+		assert(pluginID == id and vars[id].DisplayOnRightSide == (swaps == 1))
+		swaps = swaps + 1
+		TitanToggleVar(pluginID, "DisplayOnRightSide")
+	end
+	sideToggle.func()
+	assert(swaps == 1 and vars[id].DisplayOnRightSide)
+	sideToggle.func()
+	assert(swaps == 2 and not vars[id].DisplayOnRightSide)
+	TitanUtils_SwapButtonSide = nil
 	assert(not config.getButtonText(nil, id):find("[+2]", 1, true))
 	assert(#namespace.ReagentRuntimeErrors == 0)
 end
 integration("Classic")
 integration("Forever")
-print("PASS: modern APIs, Classic isolation, bag/bank totals, session gains, item hiding")
+print("PASS: modern APIs, Classic isolation, bag/bank totals, session gains, item hiding, side switching")

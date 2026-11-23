@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.3.0] - 2026-11-23
+
+### Added
+
+- Added **Hide Absent Reagents** and **Show Only Reagents in Bags** to each reagent plugin, with translations for all supported languages. Tooltips still show bag and bank counts.
+
+### Fixed
+
+- Fixed **Display on Right Side** for profession, reagent, and Master plugins using Titan Panel's built-in side switch.
+
 ## [11.2.0] - 2026-11-08
 
 ### Added

@@ -7,7 +7,6 @@ Special Thanks to Eliote.
 
 local ADDON_NAME, L = ...;
 local LibAddonCompat = LibStub("LibAddonCompat-1.0")
-local ACE = LibStub("AceLocale-3.0"):GetLocale("Titan", true)
 local Elib = LibStub("Elib-4.0")
 L.Elib = Elib.Register
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
@@ -144,12 +143,7 @@ function PrepareMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
-	local info = {};
-	info.text = ACE["TITAN_CLOCK_MENU_DISPLAY_ON_RIGHT_SIDE"];
-	info.func = function() TitanToggleVar(id, "DisplayOnRightSide"); TitanPanel_InitPanelButtons(id); end
-	info.checked = TitanGetVar(id, "DisplayOnRightSide");
-	info.keepShownOnClick = true
-	eddm.UIDropDownMenu_AddButton(info);
+	L.AddRightSideMenuToggle(eddm, id)
 
 	eddm.UIDropDownMenu_AddSpace()
 	L.AddMenuTitle(eddm, L["tooltip"])

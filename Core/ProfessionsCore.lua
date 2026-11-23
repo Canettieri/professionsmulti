@@ -89,9 +89,15 @@ function L.AddMenuFooter(eddm, id)
 	})
 end
 
-local function ToggleRightSideDisplay(self, id) -- Right side display
-	TitanToggleVar(id, "DisplayOnRightSide");
-	TitanPanel_InitPanelButtons();
+function L.AddRightSideMenuToggle(eddm, id)
+	eddm.UIDropDownMenu_AddButton({
+		text = ACE["TITAN_CLOCK_MENU_DISPLAY_ON_RIGHT_SIDE"],
+		checked = TitanGetVar(id, "DisplayOnRightSide"),
+		keepShownOnClick = true,
+		func = function()
+			TitanUtils_SwapButtonSide(id)
+		end,
+	})
 end
 
 local function ToggleHideMax(self, id) -- Hide Max display
@@ -148,13 +154,7 @@ function L.PrepareProfessionsMenu(eddm, self, id)
 	info.keepShownOnClick = true
 	eddm.UIDropDownMenu_AddButton(info);
 
-	info = {};
-	info.text = ACE["TITAN_CLOCK_MENU_DISPLAY_ON_RIGHT_SIDE"];
-	info.func = ToggleRightSideDisplay;
-	info.arg1 = id
-	info.checked = TitanGetVar(id, "DisplayOnRightSide");
-	info.keepShownOnClick = true
-	eddm.UIDropDownMenu_AddButton(info);
+	L.AddRightSideMenuToggle(eddm, id)
 
 	eddm.UIDropDownMenu_AddSpace()
 
